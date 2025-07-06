@@ -31,7 +31,10 @@ BIN = build/gestion_stock_v$(VERSION)$(EXEC_EXT)
 #-Wall et -Wextra activent de nombreux avertissements utiles pour repérer les erreurs potentielles.
 #-g ajoute les symboles de débogage (utile avec GDB, par exemple).
 #-I ajoute le dossier "Inc" au chemin de recherche des fichiers d'en-tête.
-CFLAGS=-Wall -Wextra -g -IInc
+#fix No Dependency Tracking
+# -MMD in CFLAGS to generate .d files
+
+CFLAGS=-Wall -Wextra -g -IInc -MMD
 
 #Liste des fichiers source principaux et supplémentaires.
 SRC=$(SRC_MAIN) $(SRC_SRC) $(SRC_SQLITE)
@@ -96,6 +99,7 @@ clean:
 	-@$(RM) *.o
 	-@$(RM) build/*$(EXEC_EXT)
 	-@$(RMDIR) build
+	-@$(RM) build/*.d
 
 #Compile et lance ton programme en une seule commande : make run
 run: all
@@ -188,6 +192,9 @@ weekly-report:
 	@cppcheck --enable=all --inconclusive --quiet --std=c99 --language=c --xml --xml-version=2 . 2> $(BUG_REPORT_XML) || true
 	@python3 scripts/format_bug_report.py $(BUG_REPORT_XML) >> $(WEEKLY_REPORT)
 	@echo " Rapport hebdomadaire généré : $(WEEKLY_REPORT)"
+
+#	Génération des dépendances pour la compilation
+-include $(OBJ:.o=.d)
 
 # Déclaration des cibles phony
 .PHONY: all clean run test test-integration valgrind-test valgrind-integration coverage ci-build ci-build-windows weekly-report

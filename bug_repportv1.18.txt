@@ -4,7 +4,7 @@ This document outlines identified issues and improvement suggestions for the sto
 
 ---
 
-## 📁 Makefile
+## 📁 Makefile : all done
 
 - **Object File Clutter**  
   Object files (`.o`) are generated in the root directory.  
@@ -97,3 +97,4 @@ This document outlines identified issues and improvement suggestions for the sto
 ---
 
 _Last reviewed: 2025-06-28_
+
