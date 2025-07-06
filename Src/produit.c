@@ -116,8 +116,7 @@ void supprimer_produit_interactif(sqlite3 *db) {
         printf("ID invalide ou produit inexistant.\n");
         return;
     }
-    int id= p.id;
-    if (db_supprimer_produit(db, id) == 0)
+    if (db_supprimer_produit(db, p.id) == 0)
         printf("Produit supprimé.\n");
     else
         printf("Erreur lors de la suppression.\n");
