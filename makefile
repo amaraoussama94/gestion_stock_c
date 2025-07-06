@@ -21,6 +21,7 @@ else
  CC ?= gcc
 endif
 
+
 # Test sources and executable
 TEST_SRC = test/test_database.c
 TEST_EXEC = build/test_database$(EXEC_EXT)
@@ -43,7 +44,7 @@ SRC_SRC=$(wildcard Src/*.c)
 SRC_SQLITE = sqlite-lib/sqlite3.c
 
 #Convertit la liste de fichiers .c en fichiers .o (les objets intermédiaires).
-OBJ=$(SRC:.c=.o)
+OBJ = $(patsubst %.c,build/%.o,$(SRC))
 
 # Nom de l’exécutable final.
 # Si le dossier build n'existe pas, il sera créé automatiquement.
@@ -68,13 +69,14 @@ $(EXEC): $(OBJ)
 #$< = le fichier source .c
 #$@ = le fichier .o généré
 %.o: %.c
+	@$(MKDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 #Cible pour nettoyer les fichiers intermédiaires et l'exécutable.
 #support for Windows and Unix-like systems.
 clean:
 	@echo "Nettoyage..."
-	-@$(RM) *.o
+	-@$(RM) build/*.o
 	-@$(RM) build/*$(EXEC_EXT)
 	-@$(RMDIR) build
 
@@ -169,5 +171,9 @@ weekly-report:
 	@cppcheck --enable=all --inconclusive --quiet --std=c99 --language=c --xml --xml-version=2 . 2> $(BUG_REPORT_XML) || true
 	@python3 scripts/format_bug_report.py $(BUG_REPORT_XML) >> $(WEEKLY_REPORT)
 	@echo " Rapport hebdomadaire généré : $(WEEKLY_REPORT)"
+
+#	Cible pour exécuter tous les tests et générer un rapport de bugs.
+.PHONY: all clean run test test-integration valgrind-test valgrind-integration coverage ci-build ci-build-windows weekly-report
+
 
 
