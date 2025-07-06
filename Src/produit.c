@@ -108,19 +108,29 @@ void modifier_produit_interactif(sqlite3 *db) {
  * @param db Pointeur vers la base de données SQLite ouverte.
  */
 void supprimer_produit_interactif(sqlite3 *db) {
-    
     Produit p;
     printf("ID du produit à supprimer : ");
     p.id = lire_entier();
+
     if (p.id < 0 || !db_produit_existe_par_id(db, p.id)) {
         printf("ID invalide ou produit inexistant.\n");
         return;
     }
+
+    printf("Êtes-vous sûr de vouloir supprimer ce produit ? (o/n) : ");
+    char confirm;
+    scanf(" %c", &confirm);
+    if (confirm != 'o' && confirm != 'O') {
+        printf("Suppression annulée.\n");
+        return;
+    }
+
     if (db_supprimer_produit(db, p.id) == 0)
         printf("Produit supprimé.\n");
     else
         printf("Erreur lors de la suppression.\n");
 }
+
 
 /**
  * @brief Affiche la liste des produits de manière interactive.
