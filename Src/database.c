@@ -66,7 +66,7 @@ int db_ajouter_produit(sqlite3 *db, const Produit *p) {
     sqlite3_stmt *stmt;
 
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) return -1;
-    sqlite3_bind_text(stmt, 1, p->nom, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, p->nom, -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 2, p->quantite);
     sqlite3_bind_double(stmt, 3, p->prix);
 
@@ -131,7 +131,7 @@ int db_modifier_produit(sqlite3 *db, const Produit *p) {
     sqlite3_stmt *stmt;
 
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) return -1;
-    sqlite3_bind_text(stmt, 1, p->nom, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, p->nom, -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 2, p->quantite);
     sqlite3_bind_double(stmt, 3, p->prix);
     sqlite3_bind_int(stmt, 4, p->id);
@@ -185,7 +185,9 @@ int db_produit_existe(sqlite3 *db, const char *nom) {
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK)
         return 0;
 // Liaison du paramètre
-    sqlite3_bind_text(stmt, 1, nom, -1, SQLITE_STATIC);
+/*SQLITE_TRANSIENT not  SQLITE_STATIC :This ensures SQLite makes its own copy of the string, 
+avoiding undefined behavior if the original buffer is modified or freed.*/
+    sqlite3_bind_text(stmt, 1, nom, -1, SQLITE_TRANSIENT);
 // Exécution de la requête
     if (sqlite3_step(stmt) == SQLITE_ROW) {
         existe = sqlite3_column_int(stmt, 0) > 0;
