@@ -64,7 +64,10 @@ void db_close(sqlite3 *db) {
 int db_ajouter_produit(sqlite3 *db, const Produit *p) {
     const char *sql = "INSERT INTO produits (nom, quantite, prix) VALUES (?, ?, ?);";
     sqlite3_stmt *stmt;
-
+    if (!db) {
+        fprintf(stderr, "Erreur : base de données non initialisée.\n");
+        return -1;
+    }
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) return -1;
     sqlite3_bind_text(stmt, 1, p->nom, -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 2, p->quantite);
@@ -84,7 +87,10 @@ int db_ajouter_produit(sqlite3 *db, const Produit *p) {
 int db_lister_produits(sqlite3 *db) {
     const char *sql = "SELECT id, nom, quantite, prix FROM produits;";
     sqlite3_stmt *stmt;
-
+    if (!db) {
+        fprintf(stderr, "Erreur : base de données non initialisée.\n");
+        return -1;
+    }
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) return -1;
 
     printf("Liste des produits :\n");
@@ -110,7 +116,10 @@ int db_lister_produits(sqlite3 *db) {
 int db_supprimer_produit(sqlite3 *db, int id) {
     const char *sql = "DELETE FROM produits WHERE id = ?;";
     sqlite3_stmt *stmt;
-
+    if (!db) {
+        fprintf(stderr, "Erreur : base de données non initialisée.\n");
+        return -1;
+    }
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) return -1;
     sqlite3_bind_int(stmt, 1, id);
 
@@ -129,7 +138,10 @@ int db_supprimer_produit(sqlite3 *db, int id) {
 int db_modifier_produit(sqlite3 *db, const Produit *p) {
     const char *sql = "UPDATE produits SET nom = ?, quantite = ?, prix = ? WHERE id = ?;";
     sqlite3_stmt *stmt;
-
+    if (!db) {
+        fprintf(stderr, "Erreur : base de données non initialisée.\n");
+        return -1;
+    }
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) return -1;
     sqlite3_bind_text(stmt, 1, p->nom, -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 2, p->quantite);
@@ -153,6 +165,10 @@ int db_produit_existe_par_id(sqlite3 *db, int id) {
     sqlite3_stmt *stmt;
     int existe = 0;
 
+    if (!db) {
+        fprintf(stderr, "Erreur : base de données non initialisée.\n");
+        return -1;
+    }
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK)
         return 0;
 
@@ -181,6 +197,11 @@ int db_produit_existe(sqlite3 *db, const char *nom) {
     const char *sql = "SELECT COUNT(*) FROM produits WHERE nom = ?";
     sqlite3_stmt *stmt;
     int existe = 0;
+    if (!db) {
+        fprintf(stderr, "Erreur : base de données non initialisée.\n");
+        return -1;
+    }
+
 // Préparation de la requête SQL
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK)
         return 0;
