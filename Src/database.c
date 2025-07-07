@@ -37,10 +37,13 @@ int db_init(sqlite3 **db, const char *filename) {
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Erreur création table: %s\n", err_msg);
         sqlite3_free(err_msg);
+        sqlite3_close(*db);  // Close DB on failure
+        *db = NULL;
     }
 
     return rc;
 }
+
 
 /**
  * @brief Ferme la connexion à la base de données.
