@@ -68,12 +68,20 @@ int db_ajouter_produit(sqlite3 *db, const Produit *p) {
         fprintf(stderr, "Erreur : base de données non initialisée.\n");
         return -1;
     }
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) return -1;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+    fprintf(stderr, "Erreur préparation ajout produit: %s\n", sqlite3_errmsg(db));
+    return -1;
+    }
+
     sqlite3_bind_text(stmt, 1, p->nom, -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 2, p->quantite);
     sqlite3_bind_double(stmt, 3, p->prix);
 
     int rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        fprintf(stderr, "Erreur insertion produit: %s\n", sqlite3_errmsg(db));
+    }
     sqlite3_finalize(stmt);
     return rc == SQLITE_DONE ? 0 : -1;
 }
@@ -91,7 +99,11 @@ int db_lister_produits(sqlite3 *db) {
         fprintf(stderr, "Erreur : base de données non initialisée.\n");
         return -1;
     }
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) return -1;
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+    fprintf(stderr, "Erreur préparation affichage produits: %s\n", sqlite3_errmsg(db));
+    return -1;
+    }
+
 
     printf("Liste des produits :\n");
     while (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -120,10 +132,18 @@ int db_supprimer_produit(sqlite3 *db, int id) {
         fprintf(stderr, "Erreur : base de données non initialisée.\n");
         return -1;
     }
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) return -1;
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+    fprintf(stderr, "Erreur préparation suppression produit: %s\n", sqlite3_errmsg(db));
+    return -1;
+    }
+
     sqlite3_bind_int(stmt, 1, id);
 
     int rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        fprintf(stderr, "Erreur suppression produit: %s\n", sqlite3_errmsg(db));
+    }
+
     sqlite3_finalize(stmt);
     return rc == SQLITE_DONE ? 0 : -1;
 }
@@ -142,13 +162,21 @@ int db_modifier_produit(sqlite3 *db, const Produit *p) {
         fprintf(stderr, "Erreur : base de données non initialisée.\n");
         return -1;
     }
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) return -1;
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+    fprintf(stderr, "Erreur préparation modification produit: %s\n", sqlite3_errmsg(db));
+    return -1;
+    }
+
     sqlite3_bind_text(stmt, 1, p->nom, -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 2, p->quantite);
     sqlite3_bind_double(stmt, 3, p->prix);
     sqlite3_bind_int(stmt, 4, p->id);
 
     int rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        fprintf(stderr, "Erreur modification produit: %s\n", sqlite3_errmsg(db));
+    }
+
     sqlite3_finalize(stmt);
     return rc == SQLITE_DONE ? 0 : -1;
 }
@@ -169,8 +197,12 @@ int db_produit_existe_par_id(sqlite3 *db, int id) {
         fprintf(stderr, "Erreur : base de données non initialisée.\n");
         return -1;
     }
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK)
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "Erreur préparation vérification ID: %s\n", sqlite3_errmsg(db));
         return 0;
+    }
+
 
     sqlite3_bind_int(stmt, 1, id);
 
@@ -203,8 +235,11 @@ int db_produit_existe(sqlite3 *db, const char *nom) {
     }
 
 // Préparation de la requête SQL
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK)
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "Erreur préparation vérification nom: %s\n", sqlite3_errmsg(db));
         return 0;
+    }
+
 // Liaison du paramètre
 /*SQLITE_TRANSIENT not  SQLITE_STATIC :This ensures SQLite makes its own copy of the string, 
 avoiding undefined behavior if the original buffer is modified or freed.*/
