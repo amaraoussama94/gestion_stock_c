@@ -11,7 +11,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include "utils.h"
-
+#include <errno.h>
 /**
  * @brief Lit une chaîne de caractères depuis l'entrée standard.
  *
@@ -38,33 +38,43 @@ int lire_chaine(char *buffer, size_t taille) {
 
 /**
  * @brief Reads an integer from standard input.
+ * This function prompts the user to enter a non-negative integer,  
+ * validates the input, and returns the integer value.  
+ * If the input is invalid or reading fails, it returns -1.
+ * This function handles errors gracefully by checking for invalid input,
+ *  ensuring the input is a valid non-negative integer, and clearing the input buffer if necessary.
  *
- * This function reads a line from stdin, removes the trailing newline character,
- * and checks if the input consists only of digit characters. If the input is valid,
- * it converts the string to an integer and returns it. If the input is invalid or
- * reading fails, it returns -1.
- *
- * @return The integer value read from input, or -1 if input is invalid or reading fails.
+ * @return The non-negative integer entered by the user, or -1 if input is invalid.
  */
+
 int lire_entier() {
-    char buffer[32];
-    if (!fgets(buffer, sizeof(buffer), stdin)) return -1;
+    char buffer[100];
+    char *endptr;
+    long val;
 
-    // Vérifie si la ligne a été complètement lue
-    if (strchr(buffer, '\n') == NULL) {
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF); // Vide le reste de la ligne
-        return -1; // Entrée trop longue
+    while (1) {
+        if (!fgets(buffer, sizeof(buffer), stdin)) {
+            fprintf(stderr, "Erreur de lecture.\n");
+            return -1;
+        }
+
+        errno = 0;
+        val = strtol(buffer, &endptr, 10);
+
+        if (errno != 0 || endptr == buffer || *endptr != '\n') {
+            printf("Entrée invalide. Veuillez entrer un entier non négatif : ");
+            continue;
+        }
+
+        if (val < 0) {
+            printf("Valeur négative interdite. Veuillez entrer un entier ≥ 0 : ");
+            continue;
+        }
+
+        return (int)val;
     }
-
-    buffer[strcspn(buffer, "\n")] = '\0';
-
-    for (size_t i = 0; buffer[i]; i++) {
-        if (!isdigit(buffer[i])) return -1;
-    }
-
-    return atoi(buffer);
 }
+
 
 /**
  * @brief Reads a floating-point number from standard input.

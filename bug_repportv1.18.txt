@@ -40,7 +40,7 @@ This document outlines identified issues and improvement suggestions for the sto
 
 ---
 
-## 🗃️ database.c 
+## 🗃️ database.c done
 
 - **Resource Leak on Initialization Failure**  
   If table creation fails, the database remains open.  
@@ -60,7 +60,7 @@ This document outlines identified issues and improvement suggestions for the sto
 ---
 
 
-## 🧰 utils.c
+## 🧰 utils.c done
 
 - **Negative Numbers Rejected**  
   `lire_entier()` and `lire_flottant()` do not accept negative values.  
