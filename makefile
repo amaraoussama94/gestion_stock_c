@@ -31,7 +31,10 @@ BIN = build/gestion_stock_v$(VERSION)$(EXEC_EXT)
 #-Wall et -Wextra activent de nombreux avertissements utiles pour repérer les erreurs potentielles.
 #-g ajoute les symboles de débogage (utile avec GDB, par exemple).
 #-I ajoute le dossier "Inc" au chemin de recherche des fichiers d'en-tête.
-CFLAGS=-Wall -Wextra -g -IInc
+#fix No Dependency Tracking
+# -MMD in CFLAGS to generate .d files
+
+CFLAGS=-Wall -Wextra -g -IInc -MMD
 
 #Liste des fichiers source principaux et supplémentaires.
 SRC=$(SRC_MAIN) $(SRC_SRC) $(SRC_SQLITE)
@@ -43,7 +46,7 @@ SRC_SRC=$(wildcard Src/*.c)
 SRC_SQLITE = sqlite-lib/sqlite3.c
 
 #Convertit la liste de fichiers .c en fichiers .o (les objets intermédiaires).
-OBJ=$(SRC:.c=.o)
+OBJ=$(patsubst %.c,build/%.o,$(SRC))
 
 # Nom de l’exécutable final.
 # Si le dossier build n'existe pas, il sera créé automatiquement.
@@ -61,14 +64,33 @@ all: $(EXEC)
 #$^ = tous les fichiers .o (dépendances)
 $(EXEC): $(OBJ)
 	@$(MKDIR)
-	@echo "🔧 Compilation de $(EXEC)..."
+	@echo "Compilation de $(EXEC)..."
 	$(CC) $(CFLAGS) -o $@ $^
 
 #Compile chaque fichier .c individuellement en .o.
+#Cette règle utilise un modèle pour compiler tous les fichiers .c dans le dossier courant.
+#Le modèle build/%.o signifie que tous les fichiers .c seront compilés en fichiers
+# .o dans le dossier build.
+#Le symbole % est un joker qui correspond à n'importe quel nom de fichier.
+#Le fichier build/%.o est créé à partir du fichier %.c.
+#$(dir $@) est le répertoire du fichier cible, et $(dir $<) est le répertoire du fichier source.
 #$< = le fichier source .c
 #$@ = le fichier .o généré
-%.o: %.c
+# Compilation individuelle des fichiers .c vers build/*.o
+
+# windows part :
+# $(dir $@) is evaluated by Make, not PowerShell.
+# $(subst /,\,$(dir $@)) converts forward slashes to backslashes for Windows compatibility.
+# if not exist works in cmd.exe and PowerShell when paths are properly escaped.
+
+build/%.o: %.c
+ifeq ($(OS),Windows_NT)
+	@if not exist $(subst /,\,$(dir $@)) mkdir $(subst /,\,$(dir $@))
+else
+	@mkdir -p $(dir $@)
+endif
 	$(CC) $(CFLAGS) -c $< -o $@
+
 
 #Cible pour nettoyer les fichiers intermédiaires et l'exécutable.
 #support for Windows and Unix-like systems.
@@ -77,6 +99,7 @@ clean:
 	-@$(RM) *.o
 	-@$(RM) build/*$(EXEC_EXT)
 	-@$(RMDIR) build
+	-@$(RM) build/*.d
 
 #Compile et lance ton programme en une seule commande : make run
 run: all
@@ -170,4 +193,9 @@ weekly-report:
 	@python3 scripts/format_bug_report.py $(BUG_REPORT_XML) >> $(WEEKLY_REPORT)
 	@echo " Rapport hebdomadaire généré : $(WEEKLY_REPORT)"
 
+#	Génération des dépendances pour la compilation
+-include $(OBJ:.o=.d)
+
+# Déclaration des cibles phony
+.PHONY: all clean run test test-integration valgrind-test valgrind-integration coverage ci-build ci-build-windows weekly-report
 

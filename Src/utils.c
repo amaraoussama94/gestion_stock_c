@@ -11,7 +11,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include "utils.h"
-
+#include <errno.h>
 /**
  * @brief Lit une chaîne de caractères depuis l'entrée standard.
  *
@@ -38,66 +38,79 @@ int lire_chaine(char *buffer, size_t taille) {
 
 /**
  * @brief Reads an integer from standard input.
+ * This function prompts the user to enter a non-negative integer,  
+ * validates the input, and returns the integer value.  
+ * If the input is invalid or reading fails, it returns -1.
+ * This function handles errors gracefully by checking for invalid input,
+ *  ensuring the input is a valid non-negative integer, and clearing the input buffer if necessary.
  *
- * This function reads a line from stdin, removes the trailing newline character,
- * and checks if the input consists only of digit characters. If the input is valid,
- * it converts the string to an integer and returns it. If the input is invalid or
- * reading fails, it returns -1.
- *
- * @return The integer value read from input, or -1 if input is invalid or reading fails.
+ * @return The non-negative integer entered by the user, or -1 if input is invalid.
  */
+
 int lire_entier() {
-    char buffer[32];
-    if (!fgets(buffer, sizeof(buffer), stdin)) return -1;
+    char buffer[100];
+    char *endptr;
+    long val;
 
-    // Vérifie si la ligne a été complètement lue
-    if (strchr(buffer, '\n') == NULL) {
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF); // Vide le reste de la ligne
-        return -1; // Entrée trop longue
+    while (1) {
+        if (!fgets(buffer, sizeof(buffer), stdin)) {
+            fprintf(stderr, "Erreur de lecture.\n");
+            return -1;
+        }
+
+        errno = 0;
+        val = strtol(buffer, &endptr, 10);
+
+        if (errno != 0 || endptr == buffer || *endptr != '\n') {
+            printf("Entrée invalide. Veuillez entrer un entier non négatif : ");
+            continue;
+        }
+
+        if (val < 0) {
+            printf("Valeur négative interdite. Veuillez entrer un entier ≥ 0 : ");
+            continue;
+        }
+
+        return (int)val;
     }
-
-    buffer[strcspn(buffer, "\n")] = '\0';
-
-    for (size_t i = 0; buffer[i]; i++) {
-        if (!isdigit(buffer[i])) return -1;
-    }
-
-    return atoi(buffer);
 }
 
+
 /**
- * @brief Reads a floating-point number from standard input.
- *
- * This function prompts the user to enter a floating-point number as a string,
- * validates the input to ensure it contains only digits and at most one decimal point,
- * and then converts it to a float. If the input is invalid or reading fails,
- * the function returns -1.0f.
- *
- * @return The floating-point value entered by the user, or -1.0f if input is invalid.
+ * @brief  Reads a floating-point number from standard input.
+ * This function prompts the user to enter a non-negative floating-point number,
+ * validates the input, and returns the floating-point value.
+ * If the input is invalid or reading fails, it returns -1.0f.
+ * This function handles errors gracefully by checking for invalid input,
+ * ensuring the input is a valid non-negative floating-point number, and clearing the input buffer if necessary.
+ * 
+ * @return The non-negative floating-point number entered by the user, or -1.0f if input is invalid.
  */
 
 float lire_flottant() {
-    char buffer[32];
-    if (!fgets(buffer, sizeof(buffer), stdin)) return -1.0f;
+    char buffer[100];
+    char *endptr;
+    float val;
 
-    if (strchr(buffer, '\n') == NULL) {
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF);
-        return -1.0f;
-    }
-
-    buffer[strcspn(buffer, "\n")] = '\0';
-
-    int point_count = 0;
-    for (size_t i = 0; buffer[i]; i++) {
-        if (buffer[i] == '.') {
-            point_count++;
-            if (point_count > 1) return -1.0f;
-        } else if (!isdigit(buffer[i])) {
+    while (1) {
+        if (!fgets(buffer, sizeof(buffer), stdin)) {
+            fprintf(stderr, "Erreur de lecture.\n");
             return -1.0f;
         }
-    }
 
-    return strtof(buffer, NULL);
+        errno = 0;
+        val = strtof(buffer, &endptr);
+
+        if (errno != 0 || endptr == buffer || *endptr != '\n') {
+            printf("Entrée invalide. Veuillez entrer un prix valide (ex: 12.50) : ");
+            continue;
+        }
+
+        if (val < 0.0f) {
+            printf("Le prix ne peut pas être négatif. Veuillez entrer une valeur ≥ 0 : ");
+            continue;
+        }
+
+        return val;
+    }
 }

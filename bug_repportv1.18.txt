@@ -4,7 +4,7 @@ This document outlines identified issues and improvement suggestions for the sto
 
 ---
 
-## 📁 Makefile
+## 📁 Makefile :   done
 
 - **Object File Clutter**  
   Object files (`.o`) are generated in the root directory.  
@@ -22,7 +22,25 @@ This document outlines identified issues and improvement suggestions for the sto
 
 ---
 
-## 🗃️ database.c
+## 📦 produit.c done 
+
+- **Redundant Variable**  
+  In `supprimer_produit_interactif`, `p.id` is copied unnecessarily.
+
+- **No Deletion Confirmation**  
+  Deleting a product happens without user confirmation.  
+  ✅ Suggestion: Prompt the user before deletion.
+
+- **Unclear Duplicate Product Message**  
+  The message when a product already exists is vague.  
+  ✅ Suggestion: Make it more informative and actionable.
+
+- **No NULL Check for `db`**  
+  Same as in `database.c`.
+
+---
+
+## 🗃️ database.c done
 
 - **Resource Leak on Initialization Failure**  
   If table creation fails, the database remains open.  
@@ -41,25 +59,8 @@ This document outlines identified issues and improvement suggestions for the sto
 
 ---
 
-## 📦 produit.c
 
-- **Redundant Variable**  
-  In `supprimer_produit_interactif`, `p.id` is copied unnecessarily.
-
-- **No Deletion Confirmation**  
-  Deleting a product happens without user confirmation.  
-  ✅ Suggestion: Prompt the user before deletion.
-
-- **Unclear Duplicate Product Message**  
-  The message when a product already exists is vague.  
-  ✅ Suggestion: Make it more informative and actionable.
-
-- **No NULL Check for `db`**  
-  Same as in `database.c`.
-
----
-
-## 🧰 utils.c
+## 🧰 utils.c done
 
 - **Negative Numbers Rejected**  
   `lire_entier()` and `lire_flottant()` do not accept negative values.  
@@ -97,3 +98,4 @@ This document outlines identified issues and improvement suggestions for the sto
 ---
 
 _Last reviewed: 2025-06-28_
+

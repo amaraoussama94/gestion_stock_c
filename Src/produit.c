@@ -30,9 +30,11 @@ void ajouter_produit_interactif(sqlite3 *db) {
     }
     // Vérification d'existence
     if (db_produit_existe(db, p.nom)) {
-        printf("Le produit  existe déjà. voulez-vous le modifier via menu modifier ");
+        printf(" Le produit \"%s\" existe déjà.\n", p.nom);
+        printf("Utilisez l'option 'Modifier un produit' pour le mettre à jour.\n");
         return;
     }
+
 
     // Si le produit n'existe pas, on continue l'ajout
     printf("Quantité : ");
@@ -66,6 +68,10 @@ void ajouter_produit_interactif(sqlite3 *db) {
  */
 void modifier_produit_interactif(sqlite3 *db) {
     Produit p;
+    if (!db) {
+    fprintf(stderr, "Erreur : base de données non initialisée.\n");
+    return;
+    }
     printf("ID du produit à modifier : ");
     p.id = lire_entier();
     if (p.id < 0 || !db_produit_existe_par_id(db, p.id)) {
@@ -108,20 +114,33 @@ void modifier_produit_interactif(sqlite3 *db) {
  * @param db Pointeur vers la base de données SQLite ouverte.
  */
 void supprimer_produit_interactif(sqlite3 *db) {
-    
+    if (!db) {
+    fprintf(stderr, "Erreur : base de données non initialisée.\n");
+    return;
+    }
     Produit p;
     printf("ID du produit à supprimer : ");
     p.id = lire_entier();
+
     if (p.id < 0 || !db_produit_existe_par_id(db, p.id)) {
         printf("ID invalide ou produit inexistant.\n");
         return;
     }
-    int id= p.id;
-    if (db_supprimer_produit(db, id) == 0)
+
+    printf("Êtes-vous sûr de vouloir supprimer ce produit ? (o/n) : ");
+    char confirm;
+    scanf(" %c", &confirm);
+    if (confirm != 'o' && confirm != 'O') {
+        printf("Suppression annulée.\n");
+        return;
+    }
+
+    if (db_supprimer_produit(db, p.id) == 0)
         printf("Produit supprimé.\n");
     else
         printf("Erreur lors de la suppression.\n");
 }
+
 
 /**
  * @brief Affiche la liste des produits de manière interactive.
