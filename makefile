@@ -35,7 +35,8 @@ BIN = build/gestion_stock_v$(VERSION)$(EXEC_EXT)
 # -MMD in CFLAGS to generate .d files
 
 CFLAGS=-Wall -Wextra -g -IInc -MMD
-
+#include the SQLite headers
+CFLAGS += -Iexternal/sqlite
 #Liste des fichiers source principaux et supplémentaires.
 SRC=$(SRC_MAIN) $(SRC_SRC) $(SRC_SQLITE)
 #SRC_MAIN est le fichier principal (main.c).
@@ -43,7 +44,7 @@ SRC_MAIN=main.c
 #SRC_SRC contient tous les fichiers .c du dossier src.
 SRC_SRC=$(wildcard Src/*.c)
 #Ajoute le fichier SQLite3 source.
-SRC_SQLITE = sqlite-lib/sqlite3.c
+SRC_SQLITE = external/sqlite/sqlite3.c
 
 #Convertit la liste de fichiers .c en fichiers .o (les objets intermédiaires).
 OBJ=$(patsubst %.c,build/%.o,$(SRC))

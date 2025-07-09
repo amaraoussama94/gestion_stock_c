@@ -28,8 +28,6 @@ gestion_stock_c/
 
 │   ├── produit.h
 
-│   └── sqlite3.h
-
 ├── Src/              # Fichiers source (.c)
 
 │   ├── main.c
@@ -38,9 +36,9 @@ gestion_stock_c/
 
 │   └── produit.c
 
-├── sqlite-lib/       # SQLite3 embarqué
+├── external/       # SQLite3 sub_module
 
-│   └── sqlite3.c
+│   └── sqlite
 
 ├── build/            # Fichiers compilés (.exe)
 

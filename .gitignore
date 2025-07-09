@@ -6,3 +6,4 @@
 *.gcda
 *.gcno
 /build
+external/sqlite/.*
