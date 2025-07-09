@@ -53,11 +53,22 @@ OBJ=$(patsubst %.c,build/%.o,$(SRC))
 # Si le dossier build n'existe pas, il sera créé automatiquement.
 EXEC=build/gestion_stock$(EXEC_EXT)
 
+# SQLite source generation from submodule
+SQLITE_DIR = external/sqlite
+SQLITE_C = $(SQLITE_DIR)/sqlite3.c
+SQLITE_H = $(SQLITE_DIR)/sqlite3.h
+SQLITE_TCL = $(SQLITE_DIR)/tool/mksqlite3c.tcl
+
+#target to generate sqlite3.c and sqlite3.h
+$(SQLITE_C) $(SQLITE_H): $(SQLITE_TCL)
+	@echo "  Génération de sqlite3.c et sqlite3.h depuis les sources Tcl..."
+	cd $(SQLITE_DIR) && tclsh tool/mksqlite3c.tcl
+
 #	Fichiers de test d'intégration.
 TEST_INTEGRATION_SRC = test/test_integration.c
 TEST_INTEGRATION_EXEC = build/test_integration$(EXEC_EXT)
 #Cible par défaut : si tu tapes make, cela va construire l’exécutable.
-all: $(EXEC)
+all:$(SQLITE_C) $(EXEC)
 
 #Crée l’exécutable à partir des fichiers .o.
 #MKDIR crée le dossier build s'il n'existe pas.
@@ -97,10 +108,13 @@ endif
 #support for Windows and Unix-like systems.
 clean:
 	@echo "Nettoyage..."
-	-@$(RM) *.o
-	-@$(RM) build/*$(EXEC_EXT)
-	-@$(RMDIR) build
+	-@$(RM) build/*.o
 	-@$(RM) build/*.d
+	-@$(RM) build/*$(EXEC_EXT)
+	-@$(RM) $(SQLITE_DIR)/sqlite3.c
+	-@$(RM) $(SQLITE_DIR)/sqlite3.h
+	-@$(RMDIR) build
+
 
 #Compile et lance ton programme en une seule commande : make run
 run: all

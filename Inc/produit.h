@@ -11,7 +11,7 @@
 #ifndef PRODUIT_H
 #define PRODUIT_H
 
-#include <sqlite3.h>
+#include "sqlite3.h"
 #include "database.h"
 
 /**
