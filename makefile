@@ -57,11 +57,15 @@ EXEC=build/gestion_stock$(EXEC_EXT)
 SQLITE_DIR = external/sqlite
 SQLITE_C = $(SQLITE_DIR)/sqlite3.c
 SQLITE_H = $(SQLITE_DIR)/sqlite3.h
+SQLITE_BOOTSTRAP = $(SQLITE_DIR)/tsrc/sqlite3.h
 SQLITE_TCL = $(SQLITE_DIR)/tool/mksqlite3c.tcl
+
 
 #target to generate sqlite3.c and sqlite3.h
 $(SQLITE_C) $(SQLITE_H): $(SQLITE_TCL)
-	@echo "  Génération de sqlite3.c et sqlite3.h depuis les sources Tcl..."
+	@echo "Génération SQLite à partir du sous-module..."
+	cd $(SQLITE_DIR) && ./configure
+	cd $(SQLITE_DIR) && make target_source
 	cd $(SQLITE_DIR) && tclsh tool/mksqlite3c.tcl
 
 #	Fichiers de test d'intégration.
