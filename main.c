@@ -14,6 +14,7 @@
 #include "produit.h"
 #include <stdlib.h>
 #include "utils.h"
+#include <string.h>
 /**
  * @brief Displays the main menu for the stock management system.
  * 
@@ -64,7 +65,7 @@ void pause_console() {
 #endif
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     //Force l'encodage UTF-8 dans le terminal Windows
     #ifdef _WIN32
         system("chcp 65001 > nul");
@@ -75,7 +76,11 @@ int main() {
         fprintf(stderr, "Impossible d'initialiser la base de données.\n");
         return 1;
     }
-
+    // Exit early if "--test-mode" flag is set
+    if (argc > 1 && strcmp(argv[1], "--test-mode") == 0) {
+        db_close(db);
+        return 0;
+    }
     int choix;
     // Boucle principale du menu
     do {
