@@ -207,8 +207,19 @@ weekly-summary:
 	grep -i "Coverage:" $(WEEKLY_REPORT) >> $${REPORT} && \
 	echo "✅ Summary saved: $${REPORT}" && \
 	echo "🔄 Updating README.md..." && \
-	sed -i '/<!-- weekly-report-start -->/,/<!-- weekly-report-end -->/c\<!-- weekly-report-start -->\n'`cat $${REPORT}`'\n<!-- weekly-report-end -->' README.md
-	sed -i '/<!-- weekly-report-start -->/,/<!-- weekly-report-end -->/c\<!-- weekly-report-start -->\n'`cat $${REPORT}`'\n<!-- weekly-report-end -->' README.md
+	@awk -v rfile=$${REPORT} '\
+		BEGIN { inside=0; print_header=0 } \
+		/^<!-- weekly-report-start -->/ { print; inside=1; print_header=1; next } \
+		/^<!-- weekly-report-end -->/ { \
+			if (print_header) { \
+				while ((getline line < rfile) > 0) print line; \
+				close(rfile); \
+				print_header=0; \
+			} \
+			inside=0; print; next \
+	} \
+	!inside { print }' README.md > README.tmp && mv README.tmp README.md
+
 
 
 
