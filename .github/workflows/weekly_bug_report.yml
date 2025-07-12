@@ -43,3 +43,7 @@ jobs:
           git pull --rebase origin master
           git push
 # This step uploads the weekly report as an artifact so you can download it later.
+      - name: Generate general and summary reports
+        run: |
+          make weekly-report
+          make weekly-summary
