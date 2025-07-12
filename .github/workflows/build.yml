@@ -5,12 +5,22 @@ on:
   push:
     branches:
       - master
-  pull_request:
+    # This workflow runs when code is pushed to the master branch..
+  workflow_dispatch: # Allows manual triggering of the workflow
+  # This workflow runs when the C Test Suite workflow completes successfully.
+  # It ensures that the build and release process only starts after tests pass.
+  workflow_run:
+    workflows: ["C Test Suite"]
+    types:
+      - completed
+
 jobs:  
   build:
+    # Starts only if test workflow completes successfully
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Build and Release
     runs-on: ubuntu-latest
-   #test # Ensures tests pass before building via github setting
+    #test # Ensures tests pass before building via github setting
 
     steps:
     # Downloads your code from GitHub into the runner so all files are accessible.
@@ -25,9 +35,10 @@ jobs:
     # This is your build environment setup.
     - name: Install build tools
       run: |
-        echo "🔧 Installing build tools..."
+        echo " Installing build tools..."
         sudo apt-get update && sudo apt-get install -y build-essential make
-        echo "✅ Build tools installed."
+        echo " Build tools installed."
+
     #Installs the MinGW cross-compiler, which allows you to compile C code for Windows on a Linux machine.
     - name: Install MinGW cross-compiler
       run: sudo apt-get install -y mingw-w64
@@ -39,7 +50,7 @@ jobs:
     - name: Read and bump version
       id: version
       run: |
-        echo "📖 Reading current version..."
+        echo " Reading current version..."
         VERSION=$(cat version.txt | tr -d 'v')
         MAJOR=$(echo "$VERSION" | cut -d. -f1)
         MINOR=$(echo "$VERSION" | cut -d. -f2)
@@ -47,24 +58,26 @@ jobs:
         NEW_VERSION="v$MAJOR.$NEW_MINOR"
         echo "$NEW_VERSION" > version.txt
         echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-        echo "🔢 Bumped version to $NEW_VERSION"
+        echo " Bumped version to $NEW_VERSION"
 
     # Runs your custom ci-build target from the Makefile, passing in the current version like 1.03. 
     # This generates a binary like gestion_stock_v1.03.
     - name: Build Linux binary
       run: |
-        echo "🏗️ Starting build..."
+        echo " Starting build..."
         VERSION=$(cat version.txt | tr -d 'v')
         make ci-build VERSION=$VERSION
-        echo "✅ Build completed."
+        echo " Build completed."
 
     #builds the Windows binary using the MinGW cross-compiler.
     - name: Build Windows binary
       run: |
         VERSION=$(cat version.txt | tr -d 'v')
         make ci-build-windows VERSION=$VERSION
-    - name: 📂 List build directory
+
+    - name: List build directory
       run: ls -lh build
+
     # Configures Git with a bot identity.
     # Stages and commits the updated version.txt.
     # If the version changed, it pushes the new file back to your repository.
@@ -72,13 +85,13 @@ jobs:
     # actually change (for example, if the same push runs twice).
     - name: Commit updated version
       run: |
-        echo "📦 Committing updated version.txt..."
+        echo " Committing updated version.txt..."
         git config user.name "github-actions"
         git config user.email "actions@github.com"
         git add version.txt
-        git commit -m "CI: bump version to ${{ steps.version.outputs.new_version }}" || echo "⚠️ No changes to commit."
+        git commit -m "CI: bump version to ${{ steps.version.outputs.new_version }}" || echo " No changes to commit."
         git push
-        echo "✅ Version committed and pushed."
+        echo " Version committed and pushed."
 
     # Fetches existing tags to make sure we don't duplicate them.
     # Formats the tag name (e.g. v1.05 → PROD_VERSION_1.05).
@@ -86,37 +99,40 @@ jobs:
     # If it does, it safely skips it.
     - name: Create Git tag for release
       run: |
-        echo "🏷️ Creating Git tag if it doesn't exist..."
+        echo " Creating Git tag if it doesn't exist..."
         git fetch --tags
         VERSION=${{ steps.version.outputs.new_version }}
         TAG_NAME="PROD_VERSION_${VERSION#v}"
         if ! git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
           git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
           git push origin "$TAG_NAME"
-          echo "✅ Tag $TAG_NAME created and pushed."
+          echo " Tag $TAG_NAME created and pushed."
         else
-          echo "ℹ️ Tag $TAG_NAME already exists. Skipping tag creation."
+          echo " Tag $TAG_NAME already exists. Skipping tag creation."
         fi
+
     # Checks if the compiled binaries exist in the build directory.
     - name: Check binaries exist
       run: |
         VERSION=${{ steps.version.outputs.new_version }}
         FILE_LINUX="build/gestion_stock_${VERSION}"
         FILE_WIN="build/gestion_stock_${VERSION}.exe"
-        [ -f "$FILE_LINUX" ] || { echo "❌ Linux binary not found: $FILE_LINUX"; exit 1; }
-        [ -f "$FILE_WIN" ] || { echo "❌ Windows binary not found: $FILE_WIN"; exit 1; }
-        echo "✅ Both binaries found."
-   # Uploads the Linux and Windows binaries to a GitHub Release using the tag created earlier.
+        [ -f "$FILE_LINUX" ] || { echo " Linux binary not found: $FILE_LINUX"; exit 1; }
+        [ -f "$FILE_WIN" ] || { echo " Windows binary not found: $FILE_WIN"; exit 1; }
+        echo " Both binaries found."
+
+    # Uploads the Linux and Windows binaries to a GitHub Release using the tag created earlier.
     - name: Upload binaries to GitHub Release
       uses: softprops/action-gh-release@v2
       with:
         tag_name: PROD_VERSION_${{ steps.version.outputs.new_version }}
         files: |
-            build/gestion_stock_${{ steps.version.outputs.new_version }}
-            build/gestion_stock_${{ steps.version.outputs.new_version }}.exe
+          build/gestion_stock_${{ steps.version.outputs.new_version }}
+          build/gestion_stock_${{ steps.version.outputs.new_version }}.exe
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-# This step uploads the binaries as artifacts so you can download them later.
+
+    # This step uploads the binaries as artifacts so you can download them later.
     - name: Upload binaries as artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -124,18 +140,13 @@ jobs:
         path: |
           build/gestion_stock_${{ steps.version.outputs.new_version }}
           build/gestion_stock_${{ steps.version.outputs.new_version }}.exe
-      # This step commits the build report to the repository.
 
+    # This step commits the build report to the repository.
     - name: Generate build report
       run: |
-        echo "📄 Build Report" > build_report.txt
+        echo " Build Report" > build_report.txt
         echo "Version: ${{ steps.version.outputs.new_version }}" >> build_report.txt
         echo "Date: $(date)" >> build_report.txt
         echo "Linux binary: build/gestion_stock_${{ steps.version.outputs.new_version }}" >> build_report.txt
         echo "Windows binary: build/gestion_stock_${{ steps.version.outputs.new_version }}.exe" >> build_report.txt
-        echo "✅ Build completed successfully." >> build_report.txt
-
-
-    
-
-
+        echo " Build completed successfully." >> build_report.txt
