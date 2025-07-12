@@ -193,6 +193,27 @@ weekly-report:
 	@python3 scripts/format_bug_report.py $(BUG_REPORT_XML) >> $(WEEKLY_REPORT)
 	@echo " Rapport hebdomadaire généré : $(WEEKLY_REPORT)"
 
+weekly-summary:
+	@DATE=$(shell date +%Y-%m-%d) && \
+	REPORT=reports/weekly_summary_$${DATE}.md && \
+	echo "# 📋 Weekly Summary – $${DATE}" > $${REPORT} && \
+	echo "## ✅ Completed Tasks" >> $${REPORT} && \
+	grep -i "refactor" $(WEEKLY_REPORT) >> $${REPORT} || echo "- No major refactors" >> $${REPORT} && \
+	echo "## 🧪 Test Results" >> $${REPORT} && \
+	grep -i "Unit tests" $(WEEKLY_REPORT) >> $${REPORT} && \
+	grep -i "Integration tests" $(WEEKLY_REPORT) >> $${REPORT} && \
+	grep -i "Valgrind" $(WEEKLY_REPORT) >> $${REPORT} && \
+	echo "## 📈 Coverage Summary" >> $${REPORT} && \
+	grep -i "Coverage:" $(WEEKLY_REPORT) >> $${REPORT} && \
+	echo "✅ Summary saved: $${REPORT}" && \
+	echo "🔄 Updating README.md..." && \
+	sed -i '/<!-- weekly-report-start -->/,/<!-- weekly-report-end -->/c\<!-- weekly-report-start -->\n'`cat $${REPORT}`'\n<!-- weekly-report-end -->' README.md
+	sed -i '/<!-- weekly-report-start -->/,/<!-- weekly-report-end -->/c\<!-- weekly-report-start -->\n'`cat $${REPORT}`'\n<!-- weekly-report-end -->' README.md
+
+
+
+
+
 #	Génération des dépendances pour la compilation
 -include $(OBJ:.o=.d)
 

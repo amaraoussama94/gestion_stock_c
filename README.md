@@ -163,6 +163,11 @@ Uploader les artefacts dans l’onglet Actions
 
 ##Téléchargement des binaires
 Les dernières versions compilées sont disponibles ici :
+## 🗞️ Weekly Summary
+
+<!-- weekly-report-start -->
+_(Latest weekly summary will appear here automatically)_
+<!-- weekly-report-end -->
 
 👉 [Voir les Releases](https://github.com/amaraoussama94/gestion_stock_c/releases)
 👉![Test Status](https://github.com/amaraoussama94/gestion_stock_c/actions/workflows/test.yml/badge.svg)
