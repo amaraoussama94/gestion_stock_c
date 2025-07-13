@@ -118,6 +118,8 @@ jobs:
           git add build/
           git commit -m "🔄 Sync binaries from gestion_stock_c [${{ needs.build.outputs.version }}]" || echo "No changes to commit"
           # 🛡️ Force Git to use token authentication for push
+          # 🛡️ Force Git to use token authentication for push
           git remote set-url origin https://x-access-token:${{ secrets.TEST_REPO_PUSH_TOKEN }}@github.com/amaraoussama94/Test_Auto_gestion_stock_c.git
-          git push origin master --force
+          git push origin main --force
+
 
