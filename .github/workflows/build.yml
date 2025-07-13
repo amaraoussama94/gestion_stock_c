@@ -10,9 +10,6 @@ on:
   # This workflow runs when the C Test Suite workflow completes successfully.
   # It ensures that the build and release process only starts after tests pass.
   workflow_run:
-    workflows: ["C Test Suite"]
-    types:
-      - completed
 
 jobs:  
   build:
