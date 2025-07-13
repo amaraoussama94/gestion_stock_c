@@ -141,3 +141,32 @@ jobs:
         echo "Linux binary: build/gestion_stock_${{ steps.version.outputs.new_version }}" >> build_report.txt
         echo "Windows binary: build/gestion_stock_${{ steps.version.outputs.new_version }}.exe" >> build_report.txt
         echo " Build completed successfully." >> build_report.txt
+        
+  push-to-test-repo:
+    needs: build  # Wait until the build job finishes
+    runs-on: ubuntu-latest
+
+    steps:
+      # 🔁 Clone the test repository
+      - name: Checkout test repo
+        run: |
+          git clone https://x-access-token:${{ secrets.TEST_REPO_PUSH_TOKEN }}@github.com/amaraoussama94/Test_Auto_gestion_stock_c.git test_repo
+
+      # 📥 Copy binaries into its build/ folder
+      - name: Copy new binaries
+        run: |
+          VERSION=${{ needs.build.outputs.version }}
+          mkdir -p test_repo/build/
+          cp build/gestion_stock_${VERSION} test_repo/build/gestion_stock_linux
+          cp build/gestion_stock_${VERSION}.exe test_repo/build/gestion_stock.exe
+
+      # 🔧 Commit and push to test repo
+      - name: Commit binaries to test repo
+        run: |
+          cd test_repo
+          git config user.name "CI Binary Sync"
+          git config user.email "ci@binary-sync.com"
+          git add build/
+          git commit -m "🔄 Sync binaries from gestion_stock_c [${VERSION}]" || echo "No changes to commit"
+          git push
+
