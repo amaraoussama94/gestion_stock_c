@@ -6,7 +6,6 @@ on:
     branches:
       - master
     # This workflow runs when code is pushed to the master branch..
-  workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:  
   build:
