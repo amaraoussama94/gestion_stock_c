@@ -26,22 +26,16 @@ jobs:
     # This is your build environment setup.
     - name: Install build tools
       run: |
-        echo " Installing build tools..."
         sudo apt-get update && sudo apt-get install -y build-essential make
-        echo " Build tools installed."
 
     # Installs the MinGW cross-compiler, which allows you to compile C code for Windows on a Linux machine.
     - name: Install MinGW cross-compiler
       run: sudo apt-get install -y mingw-w64
 
-    # Reads the current version from version.txt.
-    # Parses and increments the minor version by 0.01.
-    # Writes the new version back into version.txt.
-    # Exposes the new version using GITHUB_OUTPUT so it can be used later.
+    # Reads the current version from version.txt and bumps it by 0.01.
     - name: Read and bump version
       id: version
       run: |
-        echo " Reading current version..."
         VERSION=$(cat version.txt | tr -d 'v')
         MAJOR=$(echo "$VERSION" | cut -d. -f1)
         MINOR=$(echo "$VERSION" | cut -d. -f2)
@@ -49,56 +43,27 @@ jobs:
         NEW_VERSION="v$MAJOR.$NEW_MINOR"
         echo "$NEW_VERSION" > version.txt
         echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-        echo " Bumped version to $NEW_VERSION"
 
-    # Runs your custom ci-build target from the Makefile
+    # Build Linux binary
     - name: Build Linux binary
       run: |
         VERSION=$(cat version.txt | tr -d 'v')
         make ci-build VERSION=$VERSION
 
-    # Builds the Windows binary using the MinGW cross-compiler.
+    # Build Windows binary
     - name: Build Windows binary
       run: |
         VERSION=$(cat version.txt | tr -d 'v')
         make ci-build-windows VERSION=$VERSION
 
-    - name: List build directory
-      run: ls -lh build
-
-    # Configures Git with a bot identity and commits the updated version.txt.
-    - name: Commit updated version
-      run: |
-        echo " Committing updated version.txt..."
-        git config user.name "github-actions"
-        git config user.email "actions@github.com"
-        git add version.txt
-        git commit -m "CI: bump version to ${{ steps.version.outputs.new_version }}" || echo " No changes to commit."
-        git push
-
-    # Creates tag if it doesn't already exist
-    - name: Create Git tag for release
-      run: |
-        git fetch --tags
-        VERSION=${{ steps.version.outputs.new_version }}
-        TAG_NAME="PROD_VERSION_${VERSION#v}"
-        if ! git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
-          git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
-          git push origin "$TAG_NAME"
-        else
-          echo " Tag $TAG_NAME already exists."
-        fi
-
-    # Checks if binaries were successfully built
+    # Verifies binaries were successfully created
     - name: Check binaries exist
       run: |
         VERSION=${{ steps.version.outputs.new_version }}
-        FILE_LINUX="build/gestion_stock_${VERSION}"
-        FILE_WIN="build/gestion_stock_${VERSION}.exe"
-        [ -f "$FILE_LINUX" ] || { echo " Linux binary not found: $FILE_LINUX"; exit 1; }
-        [ -f "$FILE_WIN" ] || { echo " Windows binary not found: $FILE_WIN"; exit 1; }
+        [ -f "build/gestion_stock_${VERSION}" ] || { echo "Linux binary missing"; exit 1; }
+        [ -f "build/gestion_stock_${VERSION}.exe" ] || { echo "Windows binary missing"; exit 1; }
 
-    # Uploads binaries to the GitHub Release
+    # Uploads binaries to GitHub Release using the created tag
     - name: Upload binaries to GitHub Release
       uses: softprops/action-gh-release@v2
       with:
@@ -109,46 +74,43 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    # Uploads binaries as CI artifacts (accessible in workflow UI)
+    # Saves binaries as CI artifacts for use in the next job
     - name: Upload binaries as artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: gestion_stock_${{ steps.version.outputs.new_version }}
+        name: synced-binaries
         path: |
           build/gestion_stock_${{ steps.version.outputs.new_version }}
           build/gestion_stock_${{ steps.version.outputs.new_version }}.exe
 
-    # Generates a simple build report and commits it
-    - name: Generate build report
-      run: |
-        echo " Build Report" > build_report.txt
-        echo "Version: ${{ steps.version.outputs.new_version }}" >> build_report.txt
-        echo "Date: $(date)" >> build_report.txt
-        echo "Linux binary: build/gestion_stock_${{ steps.version.outputs.new_version }}" >> build_report.txt
-        echo "Windows binary: build/gestion_stock_${{ steps.version.outputs.new_version }}.exe" >> build_report.txt
-        echo " Build completed successfully." >> build_report.txt
-
   push-to-test-repo:
-    needs: build  # Ensures build job finishes first
+    name: Push Binaries to Test Repo
+    needs: build  # Depends on completion of build job
     runs-on: ubuntu-latest
 
     steps:
-      # Clones the test repo using PAT (stored as TEST_REPO_PUSH_TOKEN)
-      - name: Checkout test repo
+      # Downloads the artifacts created in the build job
+      - name: Download binaries from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: synced-binaries
+
+      # Clones the test repository using personal access token
+      - name: Clone Test Repo
         run: |
           git clone https://x-access-token:${{ secrets.TEST_REPO_PUSH_TOKEN }}@github.com/amaraoussama94/Test_Auto_gestion_stock_c.git test_repo
 
-      # Copies new binaries into build/ inside the test repo
-      - name: Copy new binaries
+      # Copies binaries into build/ folder in test repo
+      - name: Copy binaries into test repo
         run: |
           VERSION="${{ needs.build.outputs.version }}"
           echo "Using version: $VERSION"
           mkdir -p test_repo/build/
-          cp build/gestion_stock_${VERSION} test_repo/build/gestion_stock_linux
-          cp build/gestion_stock_${VERSION}.exe test_repo/build/gestion_stock.exe
+          cp gestion_stock_${VERSION} test_repo/build/gestion_stock_linux
+          cp gestion_stock_${VERSION}.exe test_repo/build/gestion_stock.exe
 
-      # Commits and pushes binaries to the test repo
-      - name: Commit binaries to test repo
+      # Commits and pushes binaries to the test repository
+      - name: Commit and push to test repo
         run: |
           cd test_repo
           git config user.name "CI Binary Sync"
