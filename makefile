@@ -205,20 +205,10 @@ weekly-summary:
 	grep -i "Valgrind" $(WEEKLY_REPORT) >> $${REPORT} && \
 	echo "## 📈 Coverage Summary" >> $${REPORT} && \
 	grep -i "Coverage:" $(WEEKLY_REPORT) >> $${REPORT} && \
-	echo "✅ Summary saved: $${REPORT}" && \
-	echo "🔄 Updating README.md..." && \
-	@awk -v rfile=$${REPORT} '\
-		BEGIN { inside=0; print_header=0 } \
-		/^<!-- weekly-report-start -->/ { print; inside=1; print_header=1; next } \
-		/^<!-- weekly-report-end -->/ { \
-			if (print_header) { \
-				while ((getline line < rfile) > 0) print line; \
-				close(rfile); \
-				print_header=0; \
-			} \
-			inside=0; print; next \
-	} \
-	!inside { print }' README.md > README.tmp && mv README.tmp README.md
+	echo " Summary saved: $${REPORT}" && \
+	echo " Updating README.md..." && \
+	@python3 scripts/update_readme.py reports/weekly_summary_$(shell date +%Y-%m-%d)
+
 
 
 
