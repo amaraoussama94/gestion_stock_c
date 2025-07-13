@@ -7,9 +7,6 @@ on:
       - master
     # This workflow runs when code is pushed to the master branch..
   workflow_dispatch: # Allows manual triggering of the workflow
-  # This workflow runs when the C Test Suite workflow completes successfully.
-  # It ensures that the build and release process only starts after tests pass.
-  workflow_run:
 
 jobs:  
   build:
