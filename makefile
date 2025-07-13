@@ -194,20 +194,22 @@ weekly-report:
 	@echo " Rapport hebdomadaire généré : $(WEEKLY_REPORT)"
 
 weekly-summary:
-	@DATE=$(shell date +%Y-%m-%d) && \
-	REPORT=reports/weekly_summary_$${DATE}.md && \
-	echo "# 📋 Weekly Summary – $${DATE}" > $${REPORT} && \
-	echo "## ✅ Completed Tasks" >> $${REPORT} && \
-	grep -i "refactor" $(WEEKLY_REPORT) >> $${REPORT} || echo "- No major refactors" >> $${REPORT} && \
-	echo "## 🧪 Test Results" >> $${REPORT} && \
-	grep -i "Unit tests" $(WEEKLY_REPORT) >> $${REPORT} && \
-	grep -i "Integration tests" $(WEEKLY_REPORT) >> $${REPORT} && \
-	grep -i "Valgrind" $(WEEKLY_REPORT) >> $${REPORT} && \
-	echo "## 📈 Coverage Summary" >> $${REPORT} && \
-	grep -i "Coverage:" $(WEEKLY_REPORT) >> $${REPORT} && \
-	echo " Summary saved: $${REPORT}" && \
-	echo " Updating README.md..." && \
-	@python3 scripts/update_readme.py reports/weekly_summary_$(shell date +%Y-%m-%d)
+	@DATE=$(shell date +%Y-%m-%d); \
+	echo "📅 Weekly summary date: $${DATE}";\
+	REPORT=reports/weekly_summary_$${DATE}.md; \
+	echo "# 📋 Weekly Summary – $${DATE}" > $${REPORT}; \
+	echo "## ✅ Completed Tasks" >> $${REPORT}; \
+	grep -i "refactor" $(WEEKLY_REPORT) >> $${REPORT} || echo "- No major refactors" >> $${REPORT}; \
+	echo "## 🧪 Test Results" >> $${REPORT}; \
+	grep -i "Unit tests" $(WEEKLY_REPORT) >> $${REPORT}; \
+	grep -i "Integration tests" $(WEEKLY_REPORT) >> $${REPORT}; \
+	grep -i "Valgrind" $(WEEKLY_REPORT) >> $${REPORT}; \
+	echo "## 📈 Coverage Summary" >> $${REPORT}; \
+	grep -i "Coverage:" $(WEEKLY_REPORT) >> $${REPORT}; \
+	echo " Summary saved: $${REPORT}"
+	@echo " Updating README.md..."
+	@python3 scripts/update_readme.py $${REPORT} || echo "⚠️ README update failed gracefully"
+
 
 
 
