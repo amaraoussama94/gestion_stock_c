@@ -17,39 +17,39 @@ make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 ##  Valgrind
 make[1]: Entering directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 valgrind --leak-check=full --error-exitcode=1 ./build/test_database
-==3369== Memcheck, a memory error detector
-==3369== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==3369== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
-==3369== Command: ./build/test_database
-==3369== 
+==3499== Memcheck, a memory error detector
+==3499== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==3499== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==3499== Command: ./build/test_database
+==3499== 
  Tous les tests ont réussi.
-==3369== 
-==3369== HEAP SUMMARY:
-==3369==     in use at exit: 0 bytes in 0 blocks
-==3369==   total heap usage: 228 allocs, 228 frees, 121,824 bytes allocated
-==3369== 
-==3369== All heap blocks were freed -- no leaks are possible
-==3369== 
-==3369== For lists of detected and suppressed errors, rerun with: -s
-==3369== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3499== 
+==3499== HEAP SUMMARY:
+==3499==     in use at exit: 0 bytes in 0 blocks
+==3499==   total heap usage: 228 allocs, 228 frees, 121,824 bytes allocated
+==3499== 
+==3499== All heap blocks were freed -- no leaks are possible
+==3499== 
+==3499== For lists of detected and suppressed errors, rerun with: -s
+==3499== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 make[1]: Entering directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 valgrind --leak-check=full --error-exitcode=1 ./build/test_integration
-==3374== Memcheck, a memory error detector
-==3374== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==3374== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
-==3374== Command: ./build/test_integration
-==3374== 
+==3503== Memcheck, a memory error detector
+==3503== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==3503== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==3503== Command: ./build/test_integration
+==3503== 
 Test d'intégration réussi.
-==3374== 
-==3374== HEAP SUMMARY:
-==3374==     in use at exit: 0 bytes in 0 blocks
-==3374==   total heap usage: 228 allocs, 228 frees, 121,824 bytes allocated
-==3374== 
-==3374== All heap blocks were freed -- no leaks are possible
-==3374== 
-==3374== For lists of detected and suppressed errors, rerun with: -s
-==3374== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3503== 
+==3503== HEAP SUMMARY:
+==3503==     in use at exit: 0 bytes in 0 blocks
+==3503==   total heap usage: 228 allocs, 228 frees, 121,824 bytes allocated
+==3503== 
+==3503== All heap blocks were freed -- no leaks are possible
+==3503== 
+==3503== For lists of detected and suppressed errors, rerun with: -s
+==3503== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 
 ##  Code Coverage
