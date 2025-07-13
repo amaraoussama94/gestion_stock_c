@@ -9,8 +9,6 @@ on:
 
 jobs:  
   build:
-    # Starts only if test workflow completes successfully
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Build and Release
     runs-on: ubuntu-latest
     #test # Ensures tests pass before building via github setting
