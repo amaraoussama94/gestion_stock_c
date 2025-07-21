@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    name: Build and Release
+    name: Build and Tag
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.new_version }}  # ✅ Makes the bumped version available to downstream jobs
@@ -63,9 +63,17 @@ jobs:
           [ -f "build/gestion_stock_${VERSION}" ] || { echo "Linux binary missing"; exit 1; }
           [ -f "build/gestion_stock_${VERSION}.exe" ] || { echo "Windows binary missing"; exit 1; }
 
+      # 🚚 Upload binaries as artifacts so other jobs can access them
+      - name: Upload binaries as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: synced-binaries
+          path: |
+            build/gestion_stock_${{ steps.version.outputs.new_version }}
+            build/gestion_stock_${{ steps.version.outputs.new_version }}.exe
+
       # 🔖 Creates and pushes the version tag (e.g. PROD_VERSION_v1.03) if it doesn't already exist
       - name: Check and bump version + create tag
-        id: tagger
         run: |
           CURRENT_VERSION=$(cat version.txt | tr -d 'v')
           MAJOR=$(echo "$CURRENT_VERSION" | cut -d. -f1)
@@ -77,11 +85,7 @@ jobs:
           git fetch --tags
           if git rev-parse "$TAG" >/dev/null 2>&1; then
             echo "Tag $TAG already exists. Skipping version bump."
-            echo "new_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
           else
-            echo "Creating new tag: $TAG"
-            echo "$NEW_VERSION" > version.txt
-
             git config user.name "CI Release Tagger"
             git config user.email "ci@release-tagger.com"
             git add version.txt
@@ -89,33 +93,10 @@ jobs:
             git tag -a "$TAG" -m "Release $NEW_VERSION"
             git push origin "$TAG"
             git push origin master
-            echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
-          fi
-
-  # 🎉 Separate job to publish binaries to GitHub Release *after* tagging is guaranteed
-  create-release:
-    name: Create GitHub Release
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Upload binaries to GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: PROD_VERSION_${{ needs.build.outputs.version }}
-          name: "Release ${{ needs.build.outputs.version }}"
-          create_release: true
-          files: |
-            build/gestion_stock_${{ needs.build.outputs.version }}
-            build/gestion_stock_${{ needs.build.outputs.version }}.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   push-to-test-repo:
     name: Push Binaries to Test Repo
-    needs: build
+    needs: build  # ✅ Depends on completion of the build job
     runs-on: ubuntu-latest
 
     steps:
@@ -149,3 +130,27 @@ jobs:
           git commit -m "🔄 Sync binaries from gestion_stock_c [${{ needs.build.outputs.version }}]" || echo "No changes to commit"
           git remote set-url origin https://x-access-token:${{ secrets.TEST_REPO_PUSH_TOKEN }}@github.com/amaraoussama94/Test_Auto_gestion_stock_c.git
           git push origin main --force
+
+  # 🎉 Final job to publish binaries to GitHub Release *after test repo sync succeeds*
+  create-release:
+    name: Create GitHub Release
+    needs: push-to-test-repo
+    runs-on: ubuntu-latest
+
+    steps:
+      # 📥 Downloads your repo (optional but good practice before release)
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 📤 Uploads binaries to GitHub Release using the created version tag
+      - name: Upload binaries to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: PROD_VERSION_${{ needs.build.outputs.version }}
+          name: "Release ${{ needs.build.outputs.version }}"
+          create_release: true
+          files: |
+            build/gestion_stock_${{ needs.build.outputs.version }}
+            build/gestion_stock_${{ needs.build.outputs.version }}.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
