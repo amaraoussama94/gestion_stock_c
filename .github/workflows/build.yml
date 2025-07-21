@@ -63,14 +63,35 @@ jobs:
         [ -f "build/gestion_stock_${VERSION}" ] || { echo "Linux binary missing"; exit 1; }
         [ -f "build/gestion_stock_${VERSION}.exe" ] || { echo "Windows binary missing"; exit 1; }
 
-    # Creates a Git tag required for GitHub Release
-    - name: Create Git tag
+    - name: Check and bump version + create tag
+      id: tagger
       run: |
-        VERSION=${{ steps.version.outputs.new_version }}
-        git config user.name "CI Release Tagger"
-        git config user.email "ci@release-tagger.com"
-        git tag -a PROD_VERSION_${VERSION} -m "Release ${VERSION}"
-        git push origin PROD_VERSION_${VERSION}
+        CURRENT_VERSION=$(cat version.txt | tr -d 'v')
+        MAJOR=$(echo "$CURRENT_VERSION" | cut -d. -f1)
+        MINOR=$(echo "$CURRENT_VERSION" | cut -d. -f2)
+        NEW_MINOR=$(printf "%02d" $((10#$MINOR + 1)))
+        NEW_VERSION="v${MAJOR}.${NEW_MINOR}"
+        TAG="PROD_VERSION_${NEW_VERSION}"
+    
+        git fetch --tags
+        if git rev-parse "$TAG" >/dev/null 2>&1; then
+          echo "Tag $TAG already exists. Skipping version bump."
+          echo "new_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+        else
+          echo "Creating new tag: $TAG"
+          echo "$NEW_VERSION" > version.txt
+    
+          git config user.name "CI Release Tagger"
+          git config user.email "ci@release-tagger.com"
+          git add version.txt
+          git commit -m "🔖 Bump version to $NEW_VERSION"
+          git tag -a "$TAG" -m "Release $NEW_VERSION"
+          git push origin "$TAG"
+          git push origin master  # Push updated version.txt
+    
+          echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
+        fi
+
 
     # Uploads binaries to GitHub Release using the created tag
     - name: Upload binaries to GitHub Release
