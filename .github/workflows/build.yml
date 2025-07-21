@@ -1,136 +1,136 @@
-# Defines a GitHub Actions workflow named "C Build and Release"
+# ✅ Defines a GitHub Actions workflow named "C Build and Release"
+# 💡 This workflow automates compiling your C program for both Linux and Windows,
+#    manages versioning, uploads release binaries, and syncs them to a test repository.
+
 name: C Build and Release
 
 on:
   push:
     branches:
-      - master  # This workflow runs when code is pushed to the master branch.
+      - master  # 🚀 Triggers this workflow when code is pushed to the master branch
 
 jobs:
   build:
     name: Build and Release
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.version.outputs.new_version }}  # ✅ Expose version to downstream jobs
+      version: ${{ steps.version.outputs.new_version }}  # ✅ Makes the bumped version available to downstream jobs
 
     steps:
-    # Downloads your code from GitHub into the runner so all files are accessible.
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      # Fix the ref to master branch and fetch all history for gcovr
-      with:
-        ref: master
-        fetch-depth: 0
+      # 📥 Downloads your repository to the GitHub runner
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: master
+          fetch-depth: 0  # 🔎 Ensures full git history is available (important for gcovr and tagging)
 
-    # Installs all the tools you need (compiler, make, etc.) on the Ubuntu runner. 
-    # This is your build environment setup.
-    - name: Install build tools
-      run: |
-        sudo apt-get update && sudo apt-get install -y build-essential make
+      # 🛠 Installs required compilation tools
+      - name: Install build tools
+        run: sudo apt-get update && sudo apt-get install -y build-essential make
 
-    # Installs the MinGW cross-compiler, which allows you to compile C code for Windows on a Linux machine.
-    - name: Install MinGW cross-compiler
-      run: sudo apt-get install -y mingw-w64
+      # 🧰 Installs MinGW to allow cross-compilation for Windows
+      - name: Install MinGW cross-compiler
+        run: sudo apt-get install -y mingw-w64
 
-    # Reads the current version from version.txt and bumps it by 0.01.
-    - name: Read and bump version
-      id: version
-      run: |
-        VERSION=$(cat version.txt | tr -d 'v')
-        MAJOR=$(echo "$VERSION" | cut -d. -f1)
-        MINOR=$(echo "$VERSION" | cut -d. -f2)
-        NEW_MINOR=$(printf "%02d" $((10#$MINOR + 1)))
-        NEW_VERSION="v$MAJOR.$NEW_MINOR"
-        echo "$NEW_VERSION" > version.txt
-        echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-
-    # Build Linux binary
-    - name: Build Linux binary
-      run: |
-        VERSION=$(cat version.txt | tr -d 'v')
-        make ci-build VERSION=$VERSION
-
-    # Build Windows binary
-    - name: Build Windows binary
-      run: |
-        VERSION=$(cat version.txt | tr -d 'v')
-        make ci-build-windows VERSION=$VERSION
-
-    # Verifies binaries were successfully created
-    - name: Check binaries exist
-      run: |
-        VERSION=${{ steps.version.outputs.new_version }}
-        [ -f "build/gestion_stock_${VERSION}" ] || { echo "Linux binary missing"; exit 1; }
-        [ -f "build/gestion_stock_${VERSION}.exe" ] || { echo "Windows binary missing"; exit 1; }
-
-    - name: Check and bump version + create tag
-      id: tagger
-      run: |
-        CURRENT_VERSION=$(cat version.txt | tr -d 'v')
-        MAJOR=$(echo "$CURRENT_VERSION" | cut -d. -f1)
-        MINOR=$(echo "$CURRENT_VERSION" | cut -d. -f2)
-        NEW_MINOR=$(printf "%02d" $((10#$MINOR + 1)))
-        NEW_VERSION="v${MAJOR}.${NEW_MINOR}"
-        TAG="PROD_VERSION_${NEW_VERSION}"
-    
-        git fetch --tags
-        if git rev-parse "$TAG" >/dev/null 2>&1; then
-          echo "Tag $TAG already exists. Skipping version bump."
-          echo "new_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
-        else
-          echo "Creating new tag: $TAG"
+      # 📈 Reads current version, bumps it (e.g. v1.02 → v1.03), and saves for reuse
+      - name: Read and bump version
+        id: version
+        run: |
+          VERSION=$(cat version.txt | tr -d 'v')
+          MAJOR=$(echo "$VERSION" | cut -d. -f1)
+          MINOR=$(echo "$VERSION" | cut -d. -f2)
+          NEW_MINOR=$(printf "%02d" $((10#$MINOR + 1)))
+          NEW_VERSION="v$MAJOR.$NEW_MINOR"
           echo "$NEW_VERSION" > version.txt
-    
-          git config user.name "CI Release Tagger"
-          git config user.email "ci@release-tagger.com"
-          git add version.txt
-          git commit -m "🔖 Bump version to $NEW_VERSION"
-          git tag -a "$TAG" -m "Release $NEW_VERSION"
-          git push origin "$TAG"
-          git push origin master  # Push updated version.txt
-    
-          echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
-        fi
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
+      # 🧪 Builds Linux binary with embedded version macro
+      - name: Build Linux binary
+        run: |
+          VERSION=$(cat version.txt | tr -d 'v')
+          make ci-build VERSION=$VERSION
 
-    # Uploads binaries to GitHub Release using the created tag
-    - name: Upload binaries to GitHub Release
-      uses: softprops/action-gh-release@v2
-      with:
-        tag_name: PROD_VERSION_${{ steps.version.outputs.new_version }}
-        files: |
-          build/gestion_stock_${{ steps.version.outputs.new_version }}
-          build/gestion_stock_${{ steps.version.outputs.new_version }}.exe
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # 🖥 Builds Windows binary with embedded version macro
+      - name: Build Windows binary
+        run: |
+          VERSION=$(cat version.txt | tr -d 'v')
+          make ci-build-windows VERSION=$VERSION
 
-    # Saves binaries as CI artifacts for use in the next job
-    - name: Upload binaries as artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: synced-binaries
-        path: |
-          build/gestion_stock_${{ steps.version.outputs.new_version }}
-          build/gestion_stock_${{ steps.version.outputs.new_version }}.exe
+      # ✅ Verifies that the binaries were successfully created
+      - name: Check binaries exist
+        run: |
+          VERSION=${{ steps.version.outputs.new_version }}
+          [ -f "build/gestion_stock_${VERSION}" ] || { echo "Linux binary missing"; exit 1; }
+          [ -f "build/gestion_stock_${VERSION}.exe" ] || { echo "Windows binary missing"; exit 1; }
+
+      # 🔖 Creates and pushes the version tag (e.g. PROD_VERSION_v1.03) if it doesn't already exist
+      - name: Check and bump version + create tag
+        id: tagger
+        run: |
+          CURRENT_VERSION=$(cat version.txt | tr -d 'v')
+          MAJOR=$(echo "$CURRENT_VERSION" | cut -d. -f1)
+          MINOR=$(echo "$CURRENT_VERSION" | cut -d. -f2)
+          NEW_MINOR=$(printf "%02d" $((10#$MINOR + 1)))
+          NEW_VERSION="v${MAJOR}.${NEW_MINOR}"
+          TAG="PROD_VERSION_${NEW_VERSION}"
+
+          git fetch --tags
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists. Skipping version bump."
+            echo "new_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+          else
+            echo "Creating new tag: $TAG"
+            echo "$NEW_VERSION" > version.txt
+
+            git config user.name "CI Release Tagger"
+            git config user.email "ci@release-tagger.com"
+            git add version.txt
+            git commit -m "🔖 Bump version to $NEW_VERSION"
+            git tag -a "$TAG" -m "Release $NEW_VERSION"
+            git push origin "$TAG"
+            git push origin master
+            echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
+          fi
+
+  # 🎉 Separate job to publish binaries to GitHub Release *after* tagging is guaranteed
+  create-release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Upload binaries to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: PROD_VERSION_${{ needs.build.outputs.version }}
+          name: "Release ${{ needs.build.outputs.version }}"
+          create_release: true
+          files: |
+            build/gestion_stock_${{ needs.build.outputs.version }}
+            build/gestion_stock_${{ needs.build.outputs.version }}.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   push-to-test-repo:
     name: Push Binaries to Test Repo
-    needs: build  # Depends on completion of build job
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
-      # Downloads the artifacts created in the build job
+      # 📦 Downloads the binaries saved as CI artifacts
       - name: Download binaries from build job
         uses: actions/download-artifact@v4
         with:
           name: synced-binaries
 
-      # Clones the test repository using personal access token
+      # 🔄 Clones your external test repository
       - name: Clone Test Repo
         run: |
           git clone https://x-access-token:${{ secrets.TEST_REPO_PUSH_TOKEN }}@github.com/amaraoussama94/Test_Auto_gestion_stock_c.git test_repo
 
-      # Copies binaries into build/ folder in test repo
+      # 📁 Copies the binaries into the test repo's build/ folder
       - name: Copy binaries into test repo
         run: |
           VERSION="${{ needs.build.outputs.version }}"
@@ -139,7 +139,7 @@ jobs:
           cp gestion_stock_${VERSION} test_repo/build/gestion_stock_linux
           cp gestion_stock_${VERSION}.exe test_repo/build/gestion_stock.exe
 
-      # Commits and pushes binaries to the test repository
+      # 🔐 Commits and pushes the binaries into your test repo
       - name: Commit and push to test repo
         run: |
           cd test_repo
