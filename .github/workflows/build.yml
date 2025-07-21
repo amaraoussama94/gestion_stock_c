@@ -63,6 +63,15 @@ jobs:
         [ -f "build/gestion_stock_${VERSION}" ] || { echo "Linux binary missing"; exit 1; }
         [ -f "build/gestion_stock_${VERSION}.exe" ] || { echo "Windows binary missing"; exit 1; }
 
+    # Creates a Git tag required for GitHub Release
+    - name: Create Git tag
+      run: |
+        VERSION=${{ steps.version.outputs.new_version }}
+        git config user.name "CI Release Tagger"
+        git config user.email "ci@release-tagger.com"
+        git tag -a PROD_VERSION_${VERSION} -m "Release ${VERSION}"
+        git push origin PROD_VERSION_${VERSION}
+
     # Uploads binaries to GitHub Release using the created tag
     - name: Upload binaries to GitHub Release
       uses: softprops/action-gh-release@v2
@@ -117,9 +126,5 @@ jobs:
           git config user.email "ci@binary-sync.com"
           git add build/
           git commit -m "🔄 Sync binaries from gestion_stock_c [${{ needs.build.outputs.version }}]" || echo "No changes to commit"
-          # 🛡️ Force Git to use token authentication for push
-          # 🛡️ Force Git to use token authentication for push
           git remote set-url origin https://x-access-token:${{ secrets.TEST_REPO_PUSH_TOKEN }}@github.com/amaraoussama94/Test_Auto_gestion_stock_c.git
           git push origin main --force
-
-
