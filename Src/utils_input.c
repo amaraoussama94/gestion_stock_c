@@ -25,11 +25,13 @@
  * @param count The number of options in the array.
  * @return The index of the selected option. If the user exits without selecting, it returns -1.
  */
+
 int get_arrow_selection(const char* options[], int count) {
     int selected = 0;
-    char c;
+    int key;  // use int to capture extended key codes
+
     while (1) {
-        // Clear screen and redraw
+        // Clear screen
         #ifdef _WIN32
             system("cls");
         #else
@@ -38,20 +40,21 @@ int get_arrow_selection(const char* options[], int count) {
 
         printf("Choisissez un thème avec ↑ ↓ puis appuyez sur Entrée:\n\n");
         for (int i = 0; i < count; ++i) {
-            if (i == selected) {
+            if (i == selected)
                 printf(" > %s <\n", options[i]);
-            } else {
+            else
                 printf("   %s\n", options[i]);
-            }
         }
 
         #ifdef _WIN32
-            c = _getch();
-            if (c == 0 || c == 224) {
-                c = _getch();
-                if (c == 72) selected = (selected - 1 + count) % count; // up
-                else if (c == 80) selected = (selected + 1) % count;    // down
-            } else if (c == 13) return selected; // enter
+            key = _getch();
+            if (key == 0 || key == 224) {
+                key = _getch();
+                if (key == 72) selected = (selected - 1 + count) % count; // Up
+                else if (key == 80) selected = (selected + 1) % count;    // Down
+            } else if (key == 13) {
+                return selected; // Enter
+            }
         #else
             struct termios oldt, newt;
             tcgetattr(STDIN_FILENO, &oldt);
@@ -59,14 +62,14 @@ int get_arrow_selection(const char* options[], int count) {
             newt.c_lflag &= ~(ICANON | ECHO);
             tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 
-            c = getchar();
-            if (c == 27 && getchar() == 91) {
-                c = getchar();
-                if (c == 'A') selected = (selected - 1 + count) % count; // up
-                else if (c == 'B') selected = (selected + 1) % count;    // down
-            } else if (c == '\n') {
+            key = getchar();
+            if (key == 27 && getchar() == 91) {
+                key = getchar();
+                if (key == 'A') selected = (selected - 1 + count) % count; // Up
+                else if (key == 'B') selected = (selected + 1) % count;    // Down
+            } else if (key == '\n') {
                 tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-                return selected;
+                return selected; // Enter
             }
 
             tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
