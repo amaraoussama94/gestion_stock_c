@@ -15,6 +15,13 @@
 #include <stdlib.h>
 #include "utils.h"
 #include <string.h>
+#include "style.h"
+#include "utils_input.h"
+
+// Define the themes for the console
+// These themes will be used in the get_arrow_selection function to display options
+const char* themes[] = {"Classic", "Blue", "Matrix", "Alert"};
+
 /**
  * @brief Displays the main menu for the stock management system.
  * 
@@ -65,6 +72,7 @@ void pause_console() {
 #endif
 }
 
+
 int main(int argc, char *argv[]) {
     //Force l'encodage UTF-8 dans le terminal Windows
     #ifdef _WIN32
@@ -83,6 +91,8 @@ int main(int argc, char *argv[]) {
     }
     int choix;
     // Boucle principale du menu
+    int selected_theme = get_arrow_selection(themes, 4);
+    apply_theme((ConsoleTheme)selected_theme);
     do {
         clear_screen(); // ← Efface l'écran à chaque itération du menu
         afficher_menu();
@@ -113,6 +123,7 @@ int main(int argc, char *argv[]) {
                 clear_screen(); // Efface l'écran avant de quitter
                 printf("Au revoir !\n");
                 pause_console(); // Pause pour permettre à l'utilisateur de lire la liste
+                reset_console_style(); // ← Restore default terminal look
                 break;
             default:
                 clear_screen(); // Efface l'écran avant d'afficher le message d'erreur

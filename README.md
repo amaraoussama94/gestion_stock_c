@@ -17,6 +17,34 @@ Structurer le projet de manière modulaire et professionnelle :
 *Compilation automatisée via Makefile
 
 *Documentation générée avec Doxygen
+## 🎨 Interface Dynamique par Thème
+
+Une nouvelle interface console permet désormais à l’utilisateur de sélectionner dynamiquement un **style visuel personnalisé** au démarrage du programme.
+
+### 🧭 Navigation intuitive
+
+- 📌 Utilisation des **flèches du clavier (↑ ↓)** pour naviguer dans les thèmes
+- ✅ **Confirmation avec Entrée**
+- 🎮 Compatible à la fois avec **Windows (via `_getch`)** et **Linux (via `termios`)**
+
+### 🖌️ Thèmes disponibles
+
+| Nom du thème | Couleur du texte | Couleur de fond |
+|--------------|------------------|------------------|
+| Classic      | Blanc            | Noir             |
+| Blue         | Bleu clair       | Bleu foncé       |
+| Matrix       | Vert             | Noir             |
+| Alert        | Rouge            | Jaune ou Rouge   |
+
+> 💡 Le thème sélectionné est appliqué à l'ensemble de l'interface jusqu'à la fermeture du programme.
+
+### 🔁 Réinitialisation automatique
+
+Avant la fermeture, le programme restaure automatiquement les couleurs par défaut du terminal pour éviter toute altération de la session suivante.
+
+---
+
+
 
 ## 🛠️ Structure du projet
 
@@ -30,6 +58,10 @@ gestion_stock_c/
 
 │   └── sqlite3.h
 
+│   └── style.h
+
+│   └── utils_input.h
+
 ├── Src/              # Fichiers source (.c)
 
 │   ├── main.c
@@ -37,6 +69,10 @@ gestion_stock_c/
 │   ├── database.c
 
 │   └── produit.c
+
+│   └── style.c
+
+│   └── utils_input.c
 
 ├── sqlite-lib/       # SQLite3 embarqué
 
