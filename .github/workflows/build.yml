@@ -118,8 +118,8 @@ jobs:
           VERSION="${{ needs.build.outputs.version }}"
           echo "Using version: $VERSION"
           mkdir -p test_repo/build/
-          cp gestion_stock_${VERSION} test_repo/build/gestion_stock_linux
-          cp gestion_stock_${VERSION}.exe test_repo/build/gestion_stock.exe
+          cp synced-binaries/gestion_stock_${VERSION} test_repo/build/gestion_stock_linux
+          cp synced-binaries/gestion_stock_${VERSION}.exe test_repo/build/gestion_stock.exe
 
       # 🔐 Commits and pushes the binaries into your test repo
       - name: Commit and push to test repo
@@ -143,15 +143,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 📦 Downloads the binaries from the artifact directory
+      - name: Download binaries from artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: synced-binaries
+
       # 📤 Uploads binaries to GitHub Release using the created version tag
       - name: Upload binaries to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: PROD_VERSION_${{ needs.build.outputs.version }}
           name: "Release ${{ needs.build.outputs.version }}"
-          create_release: true
           files: |
-            build/gestion_stock_${{ needs.build.outputs.version }}
-            build/gestion_stock_${{ needs.build.outputs.version }}.exe
+            synced-binaries/gestion_stock_${{ needs.build.outputs.version }}
+            synced-binaries/gestion_stock_${{ needs.build.outputs.version }}.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
