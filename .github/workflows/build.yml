@@ -32,7 +32,7 @@ jobs:
       - name: Install MinGW cross-compiler
         run: sudo apt-get install -y mingw-w64
 
-      # 📈 Reads current version, bumps it (e.g. v1.02 → v1.03), and saves for reuse
+      # 📈 Reads current version, bumps it (e.g. v1.02 → v1.03), and exposes it as output
       - name: Read and bump version
         id: version  # ✅ Required to expose output for other jobs
         run: |
@@ -106,7 +106,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: synced-binaries
-          path: ./binaries  # ✅ Extracts to known path
+          path: ./binaries  # ✅ Consistent directory for downstream steps
 
       # 🔍 Debug step: lists downloaded files so you can see extraction worked
       - name: List downloaded files
@@ -120,11 +120,11 @@ jobs:
       # 📁 Copies the binaries into the test repo's build/ folder
       - name: Copy binaries into test repo
         run: |
-          VERSION="${{ needs.build.outputs.version }}"
+          VERSION=$(cat version.txt | tr -d 'v')  # ✅ Fallback to version.txt
           echo "Using version: $VERSION"
           mkdir -p test_repo/build/
-          cp binaries/gestion_stock_${VERSION} test_repo/build/gestion_stock_linux
-          cp binaries/gestion_stock_${VERSION}.exe test_repo/build/gestion_stock.exe
+          cp binaries/gestion_stock_v$VERSION test_repo/build/gestion_stock_linux
+          cp binaries/gestion_stock_v$VERSION.exe test_repo/build/gestion_stock.exe
 
       # 🔐 Commits and pushes the binaries into your test repo
       - name: Commit and push to test repo
@@ -133,7 +133,7 @@ jobs:
           git config user.name "CI Binary Sync"
           git config user.email "ci@binary-sync.com"
           git add build/
-          git commit -m "🔄 Sync binaries from gestion_stock_c [${{ needs.build.outputs.version }}]" || echo "No changes to commit"
+          git commit -m "🔄 Sync binaries from gestion_stock_c [v$(cat ../version.txt)]" || echo "No changes to commit"
           git remote set-url origin https://x-access-token:${{ secrets.TEST_REPO_PUSH_TOKEN }}@github.com/amaraoussama94/Test_Auto_gestion_stock_c.git
           git push origin main --force
 
@@ -144,7 +144,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 📥 Downloads your repo (optional but good practice before release)
+      # 📥 Downloads your repo (important to access version.txt)
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -153,22 +153,29 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: synced-binaries
-          path: ./binaries  # ✅ Consistent with previous jobs
+          path: ./binaries  # ✅ Matches previous jobs
 
-      # 🧪 Debug step to verify version and file availability
+      # 🧪 Reads version from version.txt to ensure reliable tag reference
+      - name: Read version from file
+        id: version-from-file  # ✅ Creates usable output for gh-release
+        run: |
+          VERSION=$(cat version.txt | tr -d 'v')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      # 🔍 Debug step to confirm version and file availability
       - name: Verify release inputs
         run: |
-          echo "Release version: ${{ needs.build.outputs.version }}"
+          echo "Release version: ${{ steps.version-from-file.outputs.version }}"
           ls -lh binaries/
 
-      # 📤 Uploads binaries to GitHub Release using the created version tag
+      # 📤 Uploads binaries to GitHub Release using the version from file
       - name: Upload binaries to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: PROD_VERSION_${{ needs.build.outputs.version }}
-          name: "Release ${{ needs.build.outputs.version }}"
+          tag_name: PROD_VERSION_v${{ steps.version-from-file.outputs.version }}
+          name: "Release v${{ steps.version-from-file.outputs.version }}"
           files: |
-            binaries/gestion_stock_${{ needs.build.outputs.version }}
-            binaries/gestion_stock_${{ needs.build.outputs.version }}.exe
+            binaries/gestion_stock_v${{ steps.version-from-file.outputs.version }}
+            binaries/gestion_stock_v${{ steps.version-from-file.outputs.version }}.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
