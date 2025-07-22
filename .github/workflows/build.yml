@@ -101,12 +101,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 📥 Checkout repo to access version.txt
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: master
+
       # 📦 Downloads the binaries saved as CI artifacts into a custom folder
       - name: Download binaries from build job
         uses: actions/download-artifact@v4
         with:
           name: synced-binaries
-          path: ./binaries  # ✅ Consistent directory for downstream steps
+          path: ./binaries  # ✅ Matches known path
 
       # 🔍 Debug step: lists downloaded files so you can see extraction worked
       - name: List downloaded files
@@ -120,7 +126,7 @@ jobs:
       # 📁 Copies the binaries into the test repo's build/ folder
       - name: Copy binaries into test repo
         run: |
-          VERSION=$(cat version.txt | tr -d 'v')  # ✅ Fallback to version.txt
+          VERSION=$(cat version.txt | tr -d 'v')  # ✅ Reads version from checked-out file
           echo "Using version: $VERSION"
           mkdir -p test_repo/build/
           cp binaries/gestion_stock_v$VERSION test_repo/build/gestion_stock_linux
@@ -144,20 +150,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 📥 Downloads your repo (important to access version.txt)
-      - name: Checkout code
+      # 📥 Checkout repository to access version.txt
+      - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: master
 
       # 📦 Downloads the binaries from the artifact directory
       - name: Download binaries from artifact
         uses: actions/download-artifact@v4
         with:
           name: synced-binaries
-          path: ./binaries  # ✅ Matches previous jobs
+          path: ./binaries  # ✅ Consistent path across jobs
 
       # 🧪 Reads version from version.txt to ensure reliable tag reference
       - name: Read version from file
-        id: version-from-file  # ✅ Creates usable output for gh-release
+        id: version-from-file  # ✅ Outputs usable version string for GH release step
         run: |
           VERSION=$(cat version.txt | tr -d 'v')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
