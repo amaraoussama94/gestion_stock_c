@@ -18,6 +18,8 @@
 #include "style.h"
 #include "utils_input.h"
 
+// Define a flag to indicate if the program is running in test mode
+int is_test_mode = 0;
 // Define the themes for the console
 // These themes will be used in the get_arrow_selection function to display options
 const char* themes[] = {"Classic", "Blue", "Matrix", "Alert"};
@@ -64,6 +66,7 @@ void clear_screen() {
  * - On other systems (e.g., Linux, macOS), it uses the "read" command to wait for a single key press.
  */
 void pause_console() {
+    if (is_test_mode) return; //  Skip blocking in test mode
     printf("\nAppuyez sur une touche pour revenir au menu...");
 #ifdef _WIN32
     system("pause > nul");
@@ -86,6 +89,7 @@ int main(int argc, char *argv[]) {
     }
     // Exit early if "--test-mode" flag is set
     if (argc > 1 && strcmp(argv[1], "--test-mode") == 0) {
+        is_test_mode = 1;
         db_close(db);
         return 0;
     }
