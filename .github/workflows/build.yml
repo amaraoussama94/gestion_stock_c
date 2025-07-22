@@ -101,11 +101,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 📦 Downloads the binaries saved as CI artifacts
+      # 📦 Downloads the binaries saved as CI artifacts into a custom folder
       - name: Download binaries from build job
         uses: actions/download-artifact@v4
         with:
           name: synced-binaries
+          path: ./binaries  # ✅ Extracts to a known directory
+
+      # 🔍 Debug step: lists downloaded files so you can see extraction worked
+      - name: List downloaded files
+        run: ls -R ./binaries
 
       # 🔄 Clones your external test repository
       - name: Clone Test Repo
@@ -118,8 +123,8 @@ jobs:
           VERSION="${{ needs.build.outputs.version }}"
           echo "Using version: $VERSION"
           mkdir -p test_repo/build/
-          cp synced-binaries/gestion_stock_${VERSION} test_repo/build/gestion_stock_linux
-          cp synced-binaries/gestion_stock_${VERSION}.exe test_repo/build/gestion_stock.exe
+          cp binaries/gestion_stock_${VERSION} test_repo/build/gestion_stock_linux
+          cp binaries/gestion_stock_${VERSION}.exe test_repo/build/gestion_stock.exe
 
       # 🔐 Commits and pushes the binaries into your test repo
       - name: Commit and push to test repo
@@ -148,6 +153,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: synced-binaries
+          path: ./binaries  # ✅ Consistent with previous path
 
       # 📤 Uploads binaries to GitHub Release using the created version tag
       - name: Upload binaries to GitHub Release
@@ -156,7 +162,7 @@ jobs:
           tag_name: PROD_VERSION_${{ needs.build.outputs.version }}
           name: "Release ${{ needs.build.outputs.version }}"
           files: |
-            synced-binaries/gestion_stock_${{ needs.build.outputs.version }}
-            synced-binaries/gestion_stock_${{ needs.build.outputs.version }}.exe
+            binaries/gestion_stock_${{ needs.build.outputs.version }}
+            binaries/gestion_stock_${{ needs.build.outputs.version }}.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
