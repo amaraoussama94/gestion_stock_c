@@ -34,7 +34,7 @@ jobs:
 
       # 📈 Reads current version, bumps it (e.g. v1.02 → v1.03), and saves for reuse
       - name: Read and bump version
-        id: version  # ✅ ID required to expose output later
+        id: version  # ✅ Required to expose output for other jobs
         run: |
           VERSION=$(cat version.txt | tr -d 'v')
           MAJOR=$(echo "$VERSION" | cut -d. -f1)
@@ -42,7 +42,7 @@ jobs:
           NEW_MINOR=$(printf "%02d" $((10#$MINOR + 1)))
           NEW_VERSION="v$MAJOR.$NEW_MINOR"
           echo "$NEW_VERSION" > version.txt
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT  # ✅ Expose output to other jobs
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT  # ✅ Makes version available as job output
 
       # 🧪 Builds Linux binary with embedded version macro
       - name: Build Linux binary
@@ -106,7 +106,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: synced-binaries
-          path: ./binaries  # ✅ Extracts to a known directory
+          path: ./binaries  # ✅ Extracts to known path
 
       # 🔍 Debug step: lists downloaded files so you can see extraction worked
       - name: List downloaded files
@@ -148,18 +148,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 📦 Downloads the binaries from the artifact directory into ./binaries
+      # 📦 Downloads the binaries from the artifact directory
       - name: Download binaries from artifact
         uses: actions/download-artifact@v4
         with:
           name: synced-binaries
-          path: ./binaries
+          path: ./binaries  # ✅ Consistent with previous jobs
 
-      # 🔍 Debug step: confirm version and file paths
-      - name: Debug release paths
+      # 🧪 Debug step to verify version and file availability
+      - name: Verify release inputs
         run: |
-          echo "Using release version: ${{ needs.build.outputs.version }}"
-          ls -l ./binaries
+          echo "Release version: ${{ needs.build.outputs.version }}"
+          ls -lh binaries/
 
       # 📤 Uploads binaries to GitHub Release using the created version tag
       - name: Upload binaries to GitHub Release
@@ -172,7 +172,3 @@ jobs:
             binaries/gestion_stock_${{ needs.build.outputs.version }}.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # ✅ Final confirmation message   
-      - name: Release complete
-        run: echo "Release ${{ needs.build.outputs.version }} created successfully!"  
-        
