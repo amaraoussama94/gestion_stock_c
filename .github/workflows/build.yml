@@ -34,7 +34,7 @@ jobs:
 
       # 📈 Reads current version, bumps it (e.g. v1.02 → v1.03), and saves for reuse
       - name: Read and bump version
-        id: version
+        id: version  # ✅ ID required to expose output later
         run: |
           VERSION=$(cat version.txt | tr -d 'v')
           MAJOR=$(echo "$VERSION" | cut -d. -f1)
@@ -42,7 +42,7 @@ jobs:
           NEW_MINOR=$(printf "%02d" $((10#$MINOR + 1)))
           NEW_VERSION="v$MAJOR.$NEW_MINOR"
           echo "$NEW_VERSION" > version.txt
-          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT  # ✅ Expose output to other jobs
 
       # 🧪 Builds Linux binary with embedded version macro
       - name: Build Linux binary
@@ -148,12 +148,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 📦 Downloads the binaries from the artifact directory
+      # 📦 Downloads the binaries from the artifact directory into ./binaries
       - name: Download binaries from artifact
         uses: actions/download-artifact@v4
         with:
           name: synced-binaries
-          path: ./binaries  # ✅ Consistent with previous path
+          path: ./binaries
+
+      # 🔍 Debug step: confirm version and file paths
+      - name: Debug release paths
+        run: |
+          echo "Using release version: ${{ needs.build.outputs.version }}"
+          ls -l ./binaries
 
       # 📤 Uploads binaries to GitHub Release using the created version tag
       - name: Upload binaries to GitHub Release
@@ -166,3 +172,7 @@ jobs:
             binaries/gestion_stock_${{ needs.build.outputs.version }}.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # ✅ Final confirmation message   
+      - name: Release complete
+        run: echo "Release ${{ needs.build.outputs.version }} created successfully!"  
+        
