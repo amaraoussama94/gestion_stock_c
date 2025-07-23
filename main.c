@@ -90,19 +90,19 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Impossible d'initialiser la base de données.\n");
         return 1;
     }
-    // Exit early if "--test-mode" flag is set
-    for (int i = 1; i < argc; ++i) {
-        if (strcmp(argv[i], "--test-mode") == 0) is_test_mode = 1;
-        else if (strcmp(argv[i], "--test-smoke") == 0) {
-            is_smoke_test = 1;
-            db_close(db);
-            return 0;
-        } 
-    }
     int choix;
-    // Boucle principale du menu
-    int selected_theme = get_arrow_selection(themes, 4);
-    apply_theme((ConsoleTheme)selected_theme);
+        // Exit early if "--test-smoke" flag is set
+    if (argc > 1 && strcmp(argv[1], "--test-mode") == 0) is_test_mode = 1;
+    else if (argc > 1 && strcmp(argv[1], "--test-smoke") == 0) {
+        printf("Exécution en mode test...\n");
+        is_smoke_test = 1;
+        db_close(db);
+        return 0;
+    } 
+    if(!is_test_mode && !is_smoke_test) {
+        int selected_theme = get_arrow_selection(themes, 4);
+        apply_theme((ConsoleTheme)selected_theme);
+    } 
     do {
         clear_screen(); // ← Efface l'écran à chaque itération du menu
         afficher_menu();
