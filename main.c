@@ -20,6 +20,9 @@
 
 // Define a flag to indicate if the program is running in test mode
 int is_test_mode = 0;
+//  Flag to indicate if the program is running in smoke test mode
+// This flag can be used to skip certain interactive features or prompt
+int is_smoke_test = 0;
 // Define the themes for the console
 // These themes will be used in the get_arrow_selection function to display options
 const char* themes[] = {"Classic", "Blue", "Matrix", "Alert"};
@@ -88,10 +91,13 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     // Exit early if "--test-mode" flag is set
-    if (argc > 1 && strcmp(argv[1], "--test-mode") == 0) {
-        is_test_mode = 1;
-        db_close(db);
-        return 0;
+    for (int i = 1; i < argc; ++i) {
+        if (strcmp(argv[i], "--test-mode") == 0) is_test_mode = 1;
+        else if (strcmp(argv[i], "--test-smoke") == 0) {
+            is_smoke_test = 1;
+            db_close(db);
+            return 0;
+        } 
     }
     int choix;
     // Boucle principale du menu
