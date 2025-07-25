@@ -26,6 +26,15 @@
         <error id="missingInclude" severity="information" msg="Include file: &quot;utils.h&quot; not found." verbose="Include file: &quot;utils.h&quot; not found.">
             <location file="Src/produit.c" line="14" column="0"/>
         </error>
+        <error id="missingInclude" severity="information" msg="Include file: &quot;style.h&quot; not found." verbose="Include file: &quot;style.h&quot; not found.">
+            <location file="Src/style.c" line="10" column="0"/>
+        </error>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdio.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;stdio.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+            <location file="Src/style.c" line="11" column="0"/>
+        </error>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;windows.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;windows.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+            <location file="Src/style.c" line="13" column="0"/>
+        </error>
         <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdio.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;stdio.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
             <location file="Src/utils.c" line="9" column="0"/>
         </error>
@@ -53,6 +62,24 @@
             <symbol>val</symbol>
         </error>
         <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdio.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;stdio.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+            <location file="Src/utils_input.c" line="10" column="0"/>
+        </error>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;termios.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;termios.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+            <location file="Src/utils_input.c" line="15" column="0"/>
+        </error>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;unistd.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;unistd.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+            <location file="Src/utils_input.c" line="16" column="0"/>
+        </error>
+        <error id="missingInclude" severity="information" msg="Include file: &quot;utils_input.h&quot; not found." verbose="Include file: &quot;utils_input.h&quot; not found.">
+            <location file="Src/utils_input.c" line="19" column="0"/>
+        </error>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;conio.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;conio.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+            <location file="Src/utils_input.c" line="12" column="0"/>
+        </error>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;windows.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;windows.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+            <location file="Src/utils_input.c" line="13" column="0"/>
+        </error>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdio.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;stdio.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
             <location file="main.c" line="12" column="0"/>
         </error>
         <error id="missingInclude" severity="information" msg="Include file: &quot;database.h&quot; not found." verbose="Include file: &quot;database.h&quot; not found.">
@@ -70,8 +97,14 @@
         <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;string.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;string.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
             <location file="main.c" line="17" column="0"/>
         </error>
+        <error id="missingInclude" severity="information" msg="Include file: &quot;style.h&quot; not found." verbose="Include file: &quot;style.h&quot; not found.">
+            <location file="main.c" line="18" column="0"/>
+        </error>
+        <error id="missingInclude" severity="information" msg="Include file: &quot;utils_input.h&quot; not found." verbose="Include file: &quot;utils_input.h&quot; not found.">
+            <location file="main.c" line="19" column="0"/>
+        </error>
         <error id="constParameter" severity="style" msg="Parameter &apos;argv&apos; can be declared as const array" verbose="Parameter &apos;argv&apos; can be declared as const array" cwe="398" file0="main.c">
-            <location file="main.c" line="68" column="26" info="Parameter &apos;argv&apos; can be declared as const array"/>
+            <location file="main.c" line="82" column="26" info="Parameter &apos;argv&apos; can be declared as const array"/>
             <symbol>argv</symbol>
         </error>
         <error id="toomanyconfigs" severity="information" msg="Too many #ifdef configurations - cppcheck only checks 12 of 105 configurations. Use --force to check all configurations." verbose="The checking of the file will be interrupted because there are too many #ifdef configurations. Checking of all #ifdef configurations can be forced by --force command line option or from GUI preferences. However that may increase the checking time." cwe="398">
