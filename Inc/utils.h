@@ -8,6 +8,15 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+/**
+ * @brief Obtient le chemin complet du fichier de base de données.
+ * Cette fonction construit le chemin complet du fichier de base de données
+ *  en utilisant le répertoire de l'exécutable courant et le nom du fichier de base
+ * de données fourni.   
+ * @param db_name Le nom du fichier de base de données.
+ * @return Le chemin complet du fichier de base de données.
+ */
+char* get_db_path(const char* db_name) ;
 
 /**
  * @brief Lit une chaîne de caractères depuis l'entrée standard.

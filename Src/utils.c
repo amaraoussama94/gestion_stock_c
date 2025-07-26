@@ -12,6 +12,35 @@
 #include <stdlib.h>
 #include "utils.h"
 #include <errno.h>
+#include <unistd.h>
+#include <libgen.h>
+
+/**
+ * @brief Obtient le chemin complet du fichier de base de données.
+ * Cette fonction construit le chemin complet du fichier de base de données
+ * en utilisant le répertoire de l'exécutable courant et le nom du fichier de base              
+ * de données fourni.
+ * @param db_name Le nom du fichier de base de données.
+ * @return Le chemin complet du fichier de base de données. 
+ * Si une erreur se produit, retourne NULL.
+ **/
+char* get_db_path(const char* db_name) {
+    static char full_path[512];
+    char exe_path[512];
+
+    ssize_t len = readlink("/proc/self/exe", exe_path, sizeof(exe_path) - 1);
+    if (len == -1) {
+        perror("readlink");
+        return NULL;
+    }
+
+    exe_path[len] = '\0';
+    char* exe_dir = dirname(exe_path);
+
+    snprintf(full_path, sizeof(full_path), "%s/%s", exe_dir, db_name);
+    return full_path;
+}
+
 /**
  * @brief Lit une chaîne de caractères depuis l'entrée standard.
  *
