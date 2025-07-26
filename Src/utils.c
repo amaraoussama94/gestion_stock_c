@@ -4,14 +4,66 @@
  * 
  * @author Oussama Amara
  * @date 2024-06-28
- * @version 1.0
+ * @version 1.1
  */
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include "utils.h"
 #include <errno.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#include <libgen.h>
+#include <limits.h>
+#endif
+
+/**
+ * @brief Obtient le chemin complet du fichier de base de données.
+ * Cette fonction utilise le chemin de l'exécutable courant pour construire
+ * le chemin absolu vers le fichier de base de données, assurant ainsi la portabilité
+ * entre les environnements Windows et Unix.
+ * @param db_name Le nom du fichier de base de données.
+ * @return Le chemin complet du fichier de base de données, ou NULL en cas d'erreur.
+ */
+char* get_db_path(const char* db_name) {
+    static char full_path[512];
+    char exe_path[512];
+
+#ifdef _WIN32
+    DWORD len = GetModuleFileNameA(NULL, exe_path, sizeof(exe_path));
+    if (len == 0 || len >= sizeof(exe_path)) {
+        fprintf(stderr, "GetModuleFileNameA failed\n");
+        return NULL;
+    }
+    exe_path[len] = '\0';
+    char* exe_dir = strrchr(exe_path, '\\');
+    if (exe_dir) *(exe_dir + 1) = '\0';
+#else
+    ssize_t len = readlink("/proc/self/exe", exe_path, sizeof(exe_path) - 1);
+    if (len == -1) {
+        perror("readlink");
+        return NULL;
+    }
+    exe_path[len] = '\0';
+    char* exe_dir = dirname(exe_path);
+#endif
+
+    snprintf(full_path, sizeof(full_path), "%s%s%s", exe_path,
+#ifdef _WIN32
+        "\\",
+#else
+        "/",
+#endif
+        db_name);
+    return full_path;
+}
+
+
 /**
  * @brief Lit une chaîne de caractères depuis l'entrée standard.
  *

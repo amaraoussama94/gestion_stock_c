@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
     #endif
     sqlite3 *db;
     // Initialisation de la base de données
-    if (db_init(&db, "stock.db") != 0) {
+    if (db_init(&db, get_db_path("stockt.db")) != 0) {
         fprintf(stderr, "Impossible d'initialiser la base de données.\n");
         return 1;
     }
