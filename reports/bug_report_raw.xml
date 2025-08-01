@@ -36,30 +36,50 @@
             <location file="Src/style.c" line="13" column="0"/>
         </error>
         <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdio.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;stdio.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
-            <location file="Src/utils.c" line="9" column="0"/>
-        </error>
-        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;string.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;string.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
             <location file="Src/utils.c" line="10" column="0"/>
         </error>
-        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;ctype.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;ctype.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;string.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;string.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
             <location file="Src/utils.c" line="11" column="0"/>
         </error>
-        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdlib.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;stdlib.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;ctype.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;ctype.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
             <location file="Src/utils.c" line="12" column="0"/>
         </error>
-        <error id="missingInclude" severity="information" msg="Include file: &quot;utils.h&quot; not found." verbose="Include file: &quot;utils.h&quot; not found.">
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdlib.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;stdlib.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
             <location file="Src/utils.c" line="13" column="0"/>
         </error>
-        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;errno.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;errno.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+        <error id="missingInclude" severity="information" msg="Include file: &quot;utils.h&quot; not found." verbose="Include file: &quot;utils.h&quot; not found.">
             <location file="Src/utils.c" line="14" column="0"/>
         </error>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;errno.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;errno.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+            <location file="Src/utils.c" line="15" column="0"/>
+        </error>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;unistd.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;unistd.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+            <location file="Src/utils.c" line="20" column="0"/>
+        </error>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;libgen.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;libgen.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+            <location file="Src/utils.c" line="21" column="0"/>
+        </error>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;limits.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;limits.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+            <location file="Src/utils.c" line="22" column="0"/>
+        </error>
         <error id="variableScope" severity="style" msg="The scope of the variable &apos;val&apos; can be reduced." verbose="The scope of the variable &apos;val&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="Src/utils.c">
-            <location file="Src/utils.c" line="53" column="10"/>
+            <location file="Src/utils.c" line="105" column="10"/>
             <symbol>val</symbol>
         </error>
         <error id="variableScope" severity="style" msg="The scope of the variable &apos;val&apos; can be reduced." verbose="The scope of the variable &apos;val&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it&apos;s safe to move &apos;int i = 0;&apos; here\012        for (int n = 0; n &lt; 10; ++n) {\012            // it is possible but not safe to move &apos;int i = 0;&apos; here\012            do_something(&amp;i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level." cwe="398" file0="Src/utils.c">
-            <location file="Src/utils.c" line="93" column="11"/>
+            <location file="Src/utils.c" line="145" column="11"/>
             <symbol>val</symbol>
+        </error>
+        <error id="constVariablePointer" severity="style" msg="Variable &apos;exe_dir&apos; can be declared as pointer to const" verbose="Variable &apos;exe_dir&apos; can be declared as pointer to const" cwe="398" file0="Src/utils.c">
+            <location file="Src/utils.c" line="53" column="11" info="Variable &apos;exe_dir&apos; can be declared as pointer to const"/>
+            <symbol>exe_dir</symbol>
+        </error>
+        <error id="unreadVariable" severity="style" msg="Variable &apos;exe_dir&apos; is assigned a value that is never used." verbose="Variable &apos;exe_dir&apos; is assigned a value that is never used." cwe="563" file0="Src/utils.c">
+            <location file="Src/utils.c" line="53" column="19"/>
+            <symbol>exe_dir</symbol>
+        </error>
+        <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;windows.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;windows.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
+            <location file="Src/utils.c" line="18" column="0"/>
         </error>
         <error id="missingIncludeSystem" severity="information" msg="Include file: &lt;stdio.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results." verbose="Include file: &lt;stdio.h&gt; not found. Please note: Cppcheck does not need standard library headers to get proper results.">
             <location file="Src/utils_input.c" line="10" column="0"/>
