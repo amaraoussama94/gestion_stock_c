@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['🔄_20changements_20récents_20branche_20dev_5frefactorsqlite_0',['🔄 Changements récents (Branche &lt;span class=&quot;tt&quot;&gt;dev_RefactorSqlite&lt;/span&gt;)',['../md__r_e_a_d_m_e.html#autotoc_md4',1,'']]]
+  ['via_20msys2_20ou_20mingw_20_3a_0',['Sous Windows (via MSYS2 ou MinGW) :',['../md__r_e_a_d_m_e.html#autotoc_md19',1,'']]]
 ];

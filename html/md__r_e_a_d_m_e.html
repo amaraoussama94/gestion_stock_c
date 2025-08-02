@@ -96,24 +96,58 @@ $(function(){initNavTree('md__r_e_a_d_m_e.html','',''); });
 <h1 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
 🎯 Objectifs</h1>
 <p>Gérer un ensemble de produits avec leurs informations clés : ID, nom, quantité, prix</p>
-<p>Permettre l’ajout, la suppression, la modification et l’affichage des produits via une interface console</p>
-<p>Assurer la persistance des données à l’aide d’une base SQLite3 embarquée (plus de fichiers plats)</p>
-<p>Illustrer la structuration modulaire d’un projet C avec : </p><pre class="fragment">séparation des responsabilités (database, produit, main)
-
-compilation automatisée via Makefile
-
-documentation générée avec Doxygen
-</pre><h1 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
+<p>Ajouter, supprimer, modifier et afficher les produits via une interface console</p>
+<p>Assurer la persistance des données avec SQLite3 (plus de fichiers plats)</p>
+<p>Structurer le projet de manière modulaire et professionnelle :</p>
+<p>*Séparation des responsabilités (database, produit, main)</p>
+<p>*Compilation automatisée via Makefile</p>
+<p>*Documentation générée avec Doxygen </p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
+🎨 Interface Dynamique par Thème</h1>
+<p>Une nouvelle interface console permet désormais à l’utilisateur de sélectionner dynamiquement un <b>style visuel personnalisé</b> au démarrage du programme.</p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
+🧭 Navigation intuitive</h2>
+<ul>
+<li>📌 Utilisation des <b>flèches du clavier (↑ ↓)</b> pour naviguer dans les thèmes</li>
+<li>✅ <b>Confirmation avec Entrée</b></li>
+<li>🎮 Compatible à la fois avec <b>Windows (via <span class="tt">_getch</span>)</b> et <b>Linux (via <span class="tt">termios</span>)</b></li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
+🖌️ Thèmes disponibles</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Nom du thème  </th><th class="markdownTableHeadNone">Couleur du texte  </th><th class="markdownTableHeadNone">Couleur de fond  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Classic  </td><td class="markdownTableBodyNone">Blanc  </td><td class="markdownTableBodyNone">Noir  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Blue  </td><td class="markdownTableBodyNone">Bleu clair  </td><td class="markdownTableBodyNone">Bleu foncé  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Matrix  </td><td class="markdownTableBodyNone">Vert  </td><td class="markdownTableBodyNone">Noir  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Alert  </td><td class="markdownTableBodyNone">Rouge  </td><td class="markdownTableBodyNone">Jaune ou Rouge  </td></tr>
+</table>
+<blockquote class="doxtable">
+<p>💡 Le thème sélectionné est appliqué à l'ensemble de l'interface jusqu'à la fermeture du programme. </p>
+</blockquote>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
+🔁 Réinitialisation automatique</h2>
+<p>Avant la fermeture, le programme restaure automatiquement les couleurs par défaut du terminal pour éviter toute altération de la session suivante.</p>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
 🛠️ Structure du projet</h1>
 <p>gestion_stock_c/</p>
 <p>├── Inc/ # Fichiers d'en-tête (.h)</p>
-<p>│ ├── <a class="el" href="database_8h.html" title="Interface pour la gestion de la base de données SQLite des produits.">database.h</a></p>
-<p>│ ├── <a class="el" href="produit_8h.html" title="Interface utilisateur pour la gestion interactive des produits.">produit.h</a></p>
-<p>│ └── <a class="el" href="sqlite3_8h_source.html">sqlite3.h</a></p>
+<p>│ ├── database.h</p>
+<p>│ ├── produit.h</p>
+<p>│ └── sqlite3.h</p>
+<p>│ └── style.h</p>
+<p>│ └── utils_input.h</p>
 <p>├── Src/ # Fichiers source (.c)</p>
 <p>│ ├── <a class="el" href="main_8c.html" title="Ce programme permet à l&#39;utilisateur d&#39;ajouter, modifier, supprimer et lister des produits dans une ba...">main.c</a></p>
-<p>│ ├── <a class="el" href="database_8c.html" title="Implémentation des fonctions de gestion de la base de données SQLite.">database.c</a></p>
-<p>│ └── <a class="el" href="produit_8c.html" title="fonctions de gestion des produits pour un système de gestion de stock. Les opérations incluent l&#39;ajou...">produit.c</a></p>
+<p>│ ├── database.c</p>
+<p>│ └── produit.c</p>
+<p>│ └── style.c</p>
+<p>│ └── utils_input.c</p>
 <p>├── sqlite-lib/ # SQLite3 embarqué</p>
 <p>│ └── sqlite3.c</p>
 <p>├── build/ # Fichiers compilés (.exe)</p>
@@ -121,7 +155,7 @@ documentation générée avec Doxygen
 <p>├── Makefile</p>
 <p>├── Doxyfile</p>
 <p>└── README.md</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md8"></a>
 ✨ Fonctionnalités principales</h1>
 <ul>
 <li>Ajout, suppression et modification de produits</li>
@@ -130,20 +164,20 @@ documentation générée avec Doxygen
 <li>Interface console simple et efficace</li>
 <li>Compilation multiplateforme (Linux &amp; Windows)</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md9"></a>
 🔄 Changements récents (Branche <span class="tt">dev_RefactorSqlite</span>)</h1>
 <blockquote class="doxtable">
 <p>Cette branche marque une refonte complète du projet pour le rendre plus modulaire, maintenable et professionnel. </p>
 </blockquote>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
 🧠 Architecture &amp; Refactorisation</h2>
 <ul>
 <li>Suppression de l’ancienne logique basée sur fichiers plats (<span class="tt">fichier.c</span>, <span class="tt">fichier.h</span>)</li>
-<li>Intégration d’un module <span class="tt"><a class="el" href="database_8c.html" title="Implémentation des fonctions de gestion de la base de données SQLite.">database.c</a></span> utilisant <b>SQLite3</b> pour la persistance des données</li>
-<li>Création d’un module <span class="tt"><a class="el" href="produit_8c.html" title="fonctions de gestion des produits pour un système de gestion de stock. Les opérations incluent l&#39;ajou...">produit.c</a></span> dédié à l’interface utilisateur (saisie, affichage)</li>
+<li>Intégration d’un module <span class="tt">database.c</span> utilisant <b>SQLite3</b> pour la persistance des données</li>
+<li>Création d’un module <span class="tt">produit.c</span> dédié à l’interface utilisateur (saisie, affichage)</li>
 <li>Séparation claire des responsabilités entre <span class="tt">main</span>, <span class="tt">produit</span>, et <span class="tt">database</span></li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md11"></a>
 🗂️ Réorganisation du projet</h2>
 <ul>
 <li>Nouvelle structure modulaire : Inc/ → fichiers .h Src/ → fichiers .c sqlite-lib/ → sqlite3.c embarqué build/ → fichiers compilés</li>
@@ -152,48 +186,73 @@ documentation générée avec Doxygen
 <li>Nettoyage récursif avec <span class="tt">make clean</span></li>
 <li>Exécutable généré dans <span class="tt">build/</span></li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md12"></a>
 🧪 Fonctionnalités améliorées</h2>
 <ul>
 <li>Toutes les opérations (ajout, suppression, modification, affichage) passent par SQLite</li>
 <li>Plus de dépendance à des fichiers texte ou binaires</li>
 <li>Interface console plus robuste et modulaire</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md8"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md13"></a>
 🚀 Compilation</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md9"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md14"></a>
 Pré-requis</h2>
 <ul>
 <li>Compilateur C (<span class="tt">gcc</span>)</li>
 <li><a href="https://www.doxygen.nl/">Doxygen (optionnel)</a></li>
 <li>Système compatible POSIX ou Windows avec MinGW</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
 Instructions</h2>
 <p>Assurez-vous d’avoir gcc et make installés (via MinGW ou MSYS2).</p>
 <p>make # Compile le projet make run # Compile et exécute make clean # Supprime les fichiers générés</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md11"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md16"></a>
+🧪 Tests &amp; Couverture</h1>
+<p>Le projet inclut des tests unitaires et d’intégration pour garantir la fiabilité du code :</p>
+<p>Tests unitaires : ciblent les fonctions critiques du module database</p>
+<p>Tests d’intégration : valident le bon fonctionnement global de l’application</p>
+<p>Valgrind : vérifie l’absence de fuites mémoire</p>
+<blockquote class="doxtable">
+<p>⚠️ Note : Valgrind n’est pas disponible sous Windows. Pour les tests mémoire, utilisez un environnement Linux ou WSL (Windows Subsystem for Linux). </p>
+</blockquote>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md17"></a>
+📦 Dépendances pour les tests</h2>
+<p>Assurez-vous d’avoir installé les outils suivants :</p>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md18"></a>
+Sous Linux</h3>
+<p>sudo apt update sudo apt install build-essential valgrind gcovr</p>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md19"></a>
+Sous Windows (via MSYS2 ou MinGW) :</h3>
+<p>gcc (compilateur)</p>
+<p>make (outil de build)</p>
+<p>gcovr (à installer via Python : pip install gcovr)</p>
+<p>Valgrind indisponible — utilisez WSL pour les tests mémoire</p>
+<p>Sous Linux : Gcovr : génère un rapport de couverture HTML make test # Exécute les tests unitaires make test-integration # Exécute les tests d'intégration make valgrind-test # Vérifie les fuites mémoire (Linux uniquement) make coverage # Génère un rapport HTML de couverture dans build/coverage.html</p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md20"></a>
 🔧 Auto Build Process</h1>
 <p>This project leverages an automated build pipeline to ensure every change is compiled, tested, and deployed efficiently. Here’s how it works:</p>
 <ol type="1">
-<li><b><a class="el" href="struct_trigger.html">Trigger</a></b>: The build process is automatically triggered by a push to the <span class="tt">main</span> branch or upon the creation of a pull request.</li>
+<li><b>Trigger</b>: The build process is automatically triggered by a push to the <span class="tt">main</span> branch or upon the creation of a pull request.</li>
 <li><b>Build Environment</b>: A pre-configured virtual environment installs all necessary dependencies as specified in <span class="tt">requirements.txt</span> or <span class="tt">environment.yml</span>.</li>
 <li><b>Validation &amp; Tests</b>: Linting and unit tests are run to catch errors early and maintain code quality.</li>
 <li><b>Build &amp; Package</b>: The application is compiled (if necessary) and bundled for deployment.</li>
 <li><b>Deploy (Optional)</b>: If the build passes, the code is deployed to the specified environment (e.g. GitHub Pages, Docker Hub, or a cloud platform).</li>
 </ol>
 <p>All steps are defined in the <span class="tt">.github/workflows</span> directory using YAML configuration files. Comments within those files explain each stage of the pipeline.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md12"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md21"></a>
 ⚙️ Intégration Continue</h1>
 <p>Ce projet utilise GitHub Actions pour :</p>
 <p>Compiler automatiquement les binaires Linux et Windows</p>
 <p>Générer un tag Git (PROD_VERSION_x.xx)</p>
 <p>Publier les binaires dans les Releases GitHub</p>
 <p>Uploader les artefacts dans l’onglet Actions</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md13"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md22"></a>
 Téléchargement des binaires</h1>
-<p>Les dernières versions compilées sont disponibles ici :</p>
-<p>👉 <a href="https://github.com/amaraoussama94/gestion_stock_c/releases">Voir les Releases</a> </p>
+<p>Les dernières versions compilées sont disponibles ici : </p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md23"></a>
+🗞️ Weekly Summary</h1>
+<p><em>(Latest weekly summary will appear here automatically)</em></p>
+<p>👉 <a href="https://github.com/amaraoussama94/gestion_stock_c/releases">Voir les Releases</a> 👉<img src="https://github.com/amaraoussama94/gestion_stock_c/actions/workflows/test.yml/badge.svg" alt="Test Status" style="pointer-events: none;" class="inline"/> </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

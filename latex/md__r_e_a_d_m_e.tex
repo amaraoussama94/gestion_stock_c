@@ -7,34 +7,73 @@
 Ce projet est une application en langage {\bfseries{C}} permettant la gestion simple et efficace d’un stock de produits via des fichiers texte. Il s\textquotesingle{}agit d\textquotesingle{}une base pour des systèmes de gestion plus avancés.\hypertarget{md__r_e_a_d_m_e_autotoc_md1}{}\doxysection{\texorpdfstring{🎯 Objectifs}{🎯 Objectifs}}\label{md__r_e_a_d_m_e_autotoc_md1}
 Gérer un ensemble de produits avec leurs informations clés \+: ID, nom, quantité, prix
 
-Permettre l’ajout, la suppression, la modification et l’affichage des produits via une interface console
+Ajouter, supprimer, modifier et afficher les produits via une interface console
 
-Assurer la persistance des données à l’aide d’une base SQLite3 embarquée (plus de fichiers plats)
+Assurer la persistance des données avec SQLite3 (plus de fichiers plats)
 
-Illustrer la structuration modulaire d’un projet C avec \+: \begin{DoxyVerb}séparation des responsabilités (database, produit, main)
+Structurer le projet de manière modulaire et professionnelle \+:
 
-compilation automatisée via Makefile
+\texorpdfstring{$\ast$}{*}\+Séparation des responsabilités (database, produit, main)
 
-documentation générée avec Doxygen
-\end{DoxyVerb}
-\hypertarget{md__r_e_a_d_m_e_autotoc_md2}{}\doxysection{\texorpdfstring{🛠️ Structure du projet}{🛠️ Structure du projet}}\label{md__r_e_a_d_m_e_autotoc_md2}
+\texorpdfstring{$\ast$}{*}\+Compilation automatisée via Makefile
+
+\texorpdfstring{$\ast$}{*}\+Documentation générée avec Doxygen \hypertarget{md__r_e_a_d_m_e_autotoc_md2}{}\doxysection{\texorpdfstring{🎨 Interface Dynamique par Thème}{🎨 Interface Dynamique par Thème}}\label{md__r_e_a_d_m_e_autotoc_md2}
+Une nouvelle interface console permet désormais à l’utilisateur de sélectionner dynamiquement un {\bfseries{style visuel personnalisé}} au démarrage du programme.\hypertarget{md__r_e_a_d_m_e_autotoc_md3}{}\doxysubsection{\texorpdfstring{🧭 Navigation intuitive}{🧭 Navigation intuitive}}\label{md__r_e_a_d_m_e_autotoc_md3}
+
+\begin{DoxyItemize}
+\item 📌 Utilisation des {\bfseries{flèches du clavier (↑ ↓)}} pour naviguer dans les thèmes
+\item ✅ {\bfseries{Confirmation avec Entrée}}
+\item 🎮 Compatible à la fois avec {\bfseries{Windows (via {\ttfamily \+\_\+getch})}} et {\bfseries{Linux (via {\ttfamily termios})}}
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysubsection{\texorpdfstring{🖌️ Thèmes disponibles}{🖌️ Thèmes disponibles}}\label{md__r_e_a_d_m_e_autotoc_md4}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Nom du thème  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Couleur du texte  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Couleur de fond  }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Nom du thème  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Couleur du texte  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Couleur de fond  }\\\cline{1-3}
+\endhead
+Classic  &Blanc  &Noir  \\\cline{1-3}
+Blue  &Bleu clair  &Bleu foncé  \\\cline{1-3}
+Matrix  &Vert  &Noir  \\\cline{1-3}
+Alert  &Rouge  &Jaune ou Rouge  \\\cline{1-3}
+\end{longtabu}
+
+
+\begin{quote}
+💡 Le thème sélectionné est appliqué à l\textquotesingle{}ensemble de l\textquotesingle{}interface jusqu\textquotesingle{}à la fermeture du programme. \end{quote}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md5}{}\doxysubsection{\texorpdfstring{🔁 Réinitialisation automatique}{🔁 Réinitialisation automatique}}\label{md__r_e_a_d_m_e_autotoc_md5}
+Avant la fermeture, le programme restaure automatiquement les couleurs par défaut du terminal pour éviter toute altération de la session suivante.
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md7}{}\doxysection{\texorpdfstring{🛠️ Structure du projet}{🛠️ Structure du projet}}\label{md__r_e_a_d_m_e_autotoc_md7}
 gestion\+\_\+stock\+\_\+c/
 
 ├── Inc/ \# Fichiers d\textquotesingle{}en-\/tête (.h)
 
-│ ├── \doxylink{database_8h}{database.\+h}
+│ ├── database.\+h
 
-│ ├── \doxylink{produit_8h}{produit.\+h}
+│ ├── produit.\+h
 
-│ └── \doxylink{sqlite3_8h_source}{sqlite3.\+h}
+│ └── sqlite3.\+h
+
+│ └── style.\+h
+
+│ └── utils\+\_\+input.\+h
 
 ├── Src/ \# Fichiers source (.c)
 
 │ ├── \doxylink{main_8c}{main.\+c}
 
-│ ├── \doxylink{database_8c}{database.\+c}
+│ ├── database.\+c
 
-│ └── \doxylink{produit_8c}{produit.\+c}
+│ └── produit.\+c
+
+│ └── style.\+c
+
+│ └── utils\+\_\+input.\+c
 
 ├── sqlite-\/lib/ \# SQLite3 embarqué
 
@@ -48,7 +87,7 @@ gestion\+\_\+stock\+\_\+c/
 
 ├── Doxyfile
 
-└── README.\+md\hypertarget{md__r_e_a_d_m_e_autotoc_md3}{}\doxysection{\texorpdfstring{✨ Fonctionnalités principales}{✨ Fonctionnalités principales}}\label{md__r_e_a_d_m_e_autotoc_md3}
+└── README.\+md\hypertarget{md__r_e_a_d_m_e_autotoc_md8}{}\doxysection{\texorpdfstring{✨ Fonctionnalités principales}{✨ Fonctionnalités principales}}\label{md__r_e_a_d_m_e_autotoc_md8}
 
 \begin{DoxyItemize}
 \item Ajout, suppression et modification de produits
@@ -56,17 +95,17 @@ gestion\+\_\+stock\+\_\+c/
 \item Sauvegarde des données via SQLite3
 \item Interface console simple et efficace
 \item Compilation multiplateforme (Linux \& Windows)
-\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysection{\texorpdfstring{🔄 Changements récents (Branche {\ttfamily dev\+\_\+\+Refactor\+Sqlite})}{🔄 Changements récents (Branche {\ttfamily dev\+\_\+\+Refactor\+Sqlite})}}\label{md__r_e_a_d_m_e_autotoc_md4}
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md9}{}\doxysection{\texorpdfstring{🔄 Changements récents (Branche {\ttfamily dev\+\_\+\+Refactor\+Sqlite})}{🔄 Changements récents (Branche {\ttfamily dev\+\_\+\+Refactor\+Sqlite})}}\label{md__r_e_a_d_m_e_autotoc_md9}
 \begin{quote}
 Cette branche marque une refonte complète du projet pour le rendre plus modulaire, maintenable et professionnel. \end{quote}
-\hypertarget{md__r_e_a_d_m_e_autotoc_md5}{}\doxysubsection{\texorpdfstring{🧠 Architecture \& Refactorisation}{🧠 Architecture \& Refactorisation}}\label{md__r_e_a_d_m_e_autotoc_md5}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md10}{}\doxysubsection{\texorpdfstring{🧠 Architecture \& Refactorisation}{🧠 Architecture \& Refactorisation}}\label{md__r_e_a_d_m_e_autotoc_md10}
 
 \begin{DoxyItemize}
 \item Suppression de l’ancienne logique basée sur fichiers plats ({\ttfamily fichier.\+c}, {\ttfamily fichier.\+h})
-\item Intégration d’un module {\ttfamily \doxylink{database_8c}{database.\+c}} utilisant {\bfseries{SQLite3}} pour la persistance des données
-\item Création d’un module {\ttfamily \doxylink{produit_8c}{produit.\+c}} dédié à l’interface utilisateur (saisie, affichage)
+\item Intégration d’un module {\ttfamily database.\+c} utilisant {\bfseries{SQLite3}} pour la persistance des données
+\item Création d’un module {\ttfamily produit.\+c} dédié à l’interface utilisateur (saisie, affichage)
 \item Séparation claire des responsabilités entre {\ttfamily main}, {\ttfamily produit}, et {\ttfamily database}
-\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md6}{}\doxysubsection{\texorpdfstring{🗂️ Réorganisation du projet}{🗂️ Réorganisation du projet}}\label{md__r_e_a_d_m_e_autotoc_md6}
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md11}{}\doxysubsection{\texorpdfstring{🗂️ Réorganisation du projet}{🗂️ Réorganisation du projet}}\label{md__r_e_a_d_m_e_autotoc_md11}
 
 \begin{DoxyItemize}
 \item Nouvelle structure modulaire \+: Inc/ → fichiers .h Src/ → fichiers .c sqlite-\/lib/ → sqlite3.\+c embarqué build/ → fichiers compilés
@@ -74,35 +113,57 @@ Cette branche marque une refonte complète du projet pour le rendre plus modulai
 \item Compatible Windows (sans {\ttfamily -\/p})
 \item Nettoyage récursif avec {\ttfamily make clean}
 \item Exécutable généré dans {\ttfamily build/}
-\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md7}{}\doxysubsection{\texorpdfstring{🧪 Fonctionnalités améliorées}{🧪 Fonctionnalités améliorées}}\label{md__r_e_a_d_m_e_autotoc_md7}
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md12}{}\doxysubsection{\texorpdfstring{🧪 Fonctionnalités améliorées}{🧪 Fonctionnalités améliorées}}\label{md__r_e_a_d_m_e_autotoc_md12}
 
 \begin{DoxyItemize}
 \item Toutes les opérations (ajout, suppression, modification, affichage) passent par SQLite
 \item Plus de dépendance à des fichiers texte ou binaires
 \item Interface console plus robuste et modulaire
-\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md8}{}\doxysection{\texorpdfstring{🚀 Compilation}{🚀 Compilation}}\label{md__r_e_a_d_m_e_autotoc_md8}
-\hypertarget{md__r_e_a_d_m_e_autotoc_md9}{}\doxysubsection{\texorpdfstring{Pré-\/requis}{Pré-\/requis}}\label{md__r_e_a_d_m_e_autotoc_md9}
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md13}{}\doxysection{\texorpdfstring{🚀 Compilation}{🚀 Compilation}}\label{md__r_e_a_d_m_e_autotoc_md13}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md14}{}\doxysubsection{\texorpdfstring{Pré-\/requis}{Pré-\/requis}}\label{md__r_e_a_d_m_e_autotoc_md14}
 
 \begin{DoxyItemize}
 \item Compilateur C ({\ttfamily gcc})
 \item \href{https://www.doxygen.nl/}{\texttt{Doxygen (optionnel)}}
 \item Système compatible POSIX ou Windows avec Min\+GW
-\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md10}{}\doxysubsection{\texorpdfstring{Instructions}{Instructions}}\label{md__r_e_a_d_m_e_autotoc_md10}
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md15}{}\doxysubsection{\texorpdfstring{Instructions}{Instructions}}\label{md__r_e_a_d_m_e_autotoc_md15}
 Assurez-\/vous d’avoir gcc et make installés (via Min\+GW ou MSYS2).
 
-make \# Compile le projet make run \# Compile et exécute make clean \# Supprime les fichiers générés\hypertarget{md__r_e_a_d_m_e_autotoc_md11}{}\doxysection{\texorpdfstring{🔧 Auto Build Process}{🔧 Auto Build Process}}\label{md__r_e_a_d_m_e_autotoc_md11}
+make \# Compile le projet make run \# Compile et exécute make clean \# Supprime les fichiers générés\hypertarget{md__r_e_a_d_m_e_autotoc_md16}{}\doxysection{\texorpdfstring{🧪 Tests \& Couverture}{🧪 Tests \& Couverture}}\label{md__r_e_a_d_m_e_autotoc_md16}
+Le projet inclut des tests unitaires et d’intégration pour garantir la fiabilité du code \+:
+
+Tests unitaires \+: ciblent les fonctions critiques du module database
+
+Tests d’intégration \+: valident le bon fonctionnement global de l’application
+
+Valgrind \+: vérifie l’absence de fuites mémoire
+
+\begin{quote}
+⚠️ Note \+: Valgrind n’est pas disponible sous Windows. Pour les tests mémoire, utilisez un environnement Linux ou WSL (Windows Subsystem for Linux). \end{quote}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md17}{}\doxysubsection{\texorpdfstring{📦 Dépendances pour les tests}{📦 Dépendances pour les tests}}\label{md__r_e_a_d_m_e_autotoc_md17}
+Assurez-\/vous d’avoir installé les outils suivants \+:\hypertarget{md__r_e_a_d_m_e_autotoc_md18}{}\doxysubsubsection{\texorpdfstring{Sous Linux}{Sous Linux}}\label{md__r_e_a_d_m_e_autotoc_md18}
+sudo apt update sudo apt install build-\/essential valgrind gcovr\hypertarget{md__r_e_a_d_m_e_autotoc_md19}{}\doxysubsubsection{\texorpdfstring{Sous Windows (via MSYS2 ou Min\+GW) \+:}{Sous Windows (via MSYS2 ou Min\+GW) \+:}}\label{md__r_e_a_d_m_e_autotoc_md19}
+gcc (compilateur)
+
+make (outil de build)
+
+gcovr (à installer via Python \+: pip install gcovr)
+
+Valgrind indisponible — utilisez WSL pour les tests mémoire
+
+Sous Linux \+: Gcovr \+: génère un rapport de couverture HTML make test \# Exécute les tests unitaires make test-\/integration \# Exécute les tests d\textquotesingle{}intégration make valgrind-\/test \# Vérifie les fuites mémoire (Linux uniquement) make coverage \# Génère un rapport HTML de couverture dans build/coverage.\+html\hypertarget{md__r_e_a_d_m_e_autotoc_md20}{}\doxysection{\texorpdfstring{🔧 Auto Build Process}{🔧 Auto Build Process}}\label{md__r_e_a_d_m_e_autotoc_md20}
 This project leverages an automated build pipeline to ensure every change is compiled, tested, and deployed efficiently. Here’s how it works\+:
 
 
 \begin{DoxyEnumerate}
-\item {\bfseries{\doxylink{struct_trigger}{Trigger}}}\+: The build process is automatically triggered by a push to the {\ttfamily main} branch or upon the creation of a pull request.
+\item {\bfseries{Trigger}}\+: The build process is automatically triggered by a push to the {\ttfamily main} branch or upon the creation of a pull request.
 \item {\bfseries{Build Environment}}\+: A pre-\/configured virtual environment installs all necessary dependencies as specified in {\ttfamily requirements.\+txt} or {\ttfamily environment.\+yml}.
 \item {\bfseries{Validation \& Tests}}\+: Linting and unit tests are run to catch errors early and maintain code quality.
 \item {\bfseries{Build \& Package}}\+: The application is compiled (if necessary) and bundled for deployment.
 \item {\bfseries{Deploy (Optional)}}\+: If the build passes, the code is deployed to the specified environment (e.\+g. Git\+Hub Pages, Docker Hub, or a cloud platform).
 \end{DoxyEnumerate}
 
-All steps are defined in the {\ttfamily .github/workflows} directory using YAML configuration files. Comments within those files explain each stage of the pipeline.\hypertarget{md__r_e_a_d_m_e_autotoc_md12}{}\doxysection{\texorpdfstring{⚙️ Intégration Continue}{⚙️ Intégration Continue}}\label{md__r_e_a_d_m_e_autotoc_md12}
+All steps are defined in the {\ttfamily .github/workflows} directory using YAML configuration files. Comments within those files explain each stage of the pipeline.\hypertarget{md__r_e_a_d_m_e_autotoc_md21}{}\doxysection{\texorpdfstring{⚙️ Intégration Continue}{⚙️ Intégration Continue}}\label{md__r_e_a_d_m_e_autotoc_md21}
 Ce projet utilise Git\+Hub Actions pour \+:
 
 Compiler automatiquement les binaires Linux et Windows
@@ -111,7 +172,8 @@ Générer un tag Git (PROD\+\_\+\+VERSION\+\_\+x.\+xx)
 
 Publier les binaires dans les Releases Git\+Hub
 
-Uploader les artefacts dans l’onglet Actions\hypertarget{md__r_e_a_d_m_e_autotoc_md13}{}\doxysection{\texorpdfstring{Téléchargement des binaires}{Téléchargement des binaires}}\label{md__r_e_a_d_m_e_autotoc_md13}
-Les dernières versions compilées sont disponibles ici \+:
+Uploader les artefacts dans l’onglet Actions\hypertarget{md__r_e_a_d_m_e_autotoc_md22}{}\doxysection{\texorpdfstring{Téléchargement des binaires}{Téléchargement des binaires}}\label{md__r_e_a_d_m_e_autotoc_md22}
+Les dernières versions compilées sont disponibles ici \+: \hypertarget{md__r_e_a_d_m_e_autotoc_md23}{}\doxysection{\texorpdfstring{🗞️ Weekly Summary}{🗞️ Weekly Summary}}\label{md__r_e_a_d_m_e_autotoc_md23}
+{\itshape (Latest weekly summary will appear here automatically)}
 
-👉 \href{https://github.com/amaraoussama94/gestion_stock_c/releases}{\texttt{Voir les Releases}} 
+👉 \href{https://github.com/amaraoussama94/gestion_stock_c/releases}{\texttt{Voir les Releases}} 👉 

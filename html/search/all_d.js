@@ -1,12 +1,8 @@
 var searchData=
 [
-  ['main_2ec_0',['main.c',['../main_8c.html',1,'']]],
-  ['memfile_1',['MemFile',['../struct_mem_file.html',1,'']]],
-  ['memjournal_2',['MemJournal',['../struct_mem_journal.html',1,'']]],
-  ['mempage_3',['MemPage',['../struct_mem_page.html',1,'']]],
-  ['memstore_4',['MemStore',['../struct_mem_store.html',1,'']]],
-  ['memvalue_5',['MemValue',['../unionsqlite3__value_1_1_mem_value.html',1,'sqlite3_value']]],
-  ['mergeengine_6',['MergeEngine',['../struct_merge_engine.html',1,'']]],
-  ['modifier_5fproduit_5finteractif_7',['modifier_produit_interactif',['../produit_8h.html#ac14335164caf5461f506e1597dadfeea',1,'modifier_produit_interactif(sqlite3 *db):&#160;produit.c'],['../produit_8c.html#ac14335164caf5461f506e1597dadfeea',1,'modifier_produit_interactif(sqlite3 *db):&#160;produit.c']]],
-  ['module_8',['Module',['../struct_module.html',1,'']]]
+  ['récents_20branche_20dev_5frefactorsqlite_0',['🔄 Changements récents (Branche &lt;span class=&quot;tt&quot;&gt;dev_RefactorSqlite&lt;/span&gt;)',['../md__r_e_a_d_m_e.html#autotoc_md9',1,'']]],
+  ['réinitialisation_20automatique_1',['🔁 Réinitialisation automatique',['../md__r_e_a_d_m_e.html#autotoc_md5',1,'']]],
+  ['réorganisation_20du_20projet_2',['🗂️ Réorganisation du projet',['../md__r_e_a_d_m_e.html#autotoc_md11',1,'']]],
+  ['refactorisation_3',['🧠 Architecture &amp;amp; Refactorisation',['../md__r_e_a_d_m_e.html#autotoc_md10',1,'']]],
+  ['requis_4',['Pré-requis',['../md__r_e_a_d_m_e.html#autotoc_md14',1,'']]]
 ];

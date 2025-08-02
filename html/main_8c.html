@@ -95,10 +95,13 @@ $(function(){initNavTree('main_8c.html','',''); });
 <p>Ce programme permet à l'utilisateur d'ajouter, modifier, supprimer et lister des produits dans une base de données SQLite. Il utilise une interface en ligne de commande pour interagir avec l'utilisateur.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="database_8h_source.html">database.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="produit_8h_source.html">produit.h</a>&quot;</code><br />
+<code>#include &quot;database.h&quot;</code><br />
+<code>#include &quot;produit.h&quot;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="utils_8h_source.html">utils.h</a>&quot;</code><br />
+<code>#include &quot;utils.h&quot;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
+<code>#include &quot;style.h&quot;</code><br />
+<code>#include &quot;utils_input.h&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -108,8 +111,17 @@ Functions</h2></td></tr>
 <tr class="memdesc:a4953d1edcbbfc7e420c423ded1d5621a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the terminal screen.  <br /></td></tr>
 <tr class="memitem:a5ce7464bfaea97ff6484a00d78b150a3" id="r_a5ce7464bfaea97ff6484a00d78b150a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ce7464bfaea97ff6484a00d78b150a3">pause_console</a> ()</td></tr>
 <tr class="memdesc:a5ce7464bfaea97ff6484a00d78b150a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pauses the console and waits for the user to press a key before continuing.  <br /></td></tr>
-<tr class="memitem:ae66f6b31b5ad750f1fe042a706a4e3d4" id="r_ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memItemLeft" align="right" valign="top"><a id="ae66f6b31b5ad750f1fe042a706a4e3d4" name="ae66f6b31b5ad750f1fe042a706a4e3d4"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> ()</td></tr>
+<tr class="memitem:a0ddf1224851353fc92bfbff6f499fa97" id="r_a0ddf1224851353fc92bfbff6f499fa97"><td class="memItemLeft" align="right" valign="top"><a id="a0ddf1224851353fc92bfbff6f499fa97" name="a0ddf1224851353fc92bfbff6f499fa97"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>main</b> (int argc, char *argv[])</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ac48b947f2452c581688bdc5a926bced4" id="r_ac48b947f2452c581688bdc5a926bced4"><td class="memItemLeft" align="right" valign="top"><a id="ac48b947f2452c581688bdc5a926bced4" name="ac48b947f2452c581688bdc5a926bced4"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>is_test_mode</b> = 0</td></tr>
+<tr class="memitem:ab006fbd4af3f97e881df6090f76628d6" id="r_ab006fbd4af3f97e881df6090f76628d6"><td class="memItemLeft" align="right" valign="top"><a id="ab006fbd4af3f97e881df6090f76628d6" name="ab006fbd4af3f97e881df6090f76628d6"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>is_smoke_test</b> = 0</td></tr>
+<tr class="memitem:abe732a0e6e9fd2a6919498dbe5296150" id="r_abe732a0e6e9fd2a6919498dbe5296150"><td class="memItemLeft" align="right" valign="top"><a id="abe732a0e6e9fd2a6919498dbe5296150" name="abe732a0e6e9fd2a6919498dbe5296150"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>themes</b> [] = {&quot;Classic&quot;, &quot;Blue&quot;, &quot;Matrix&quot;, &quot;Alert&quot;}</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Ce programme permet à l'utilisateur d'ajouter, modifier, supprimer et lister des produits dans une base de données SQLite. Il utilise une interface en ligne de commande pour interagir avec l'utilisateur. </p>

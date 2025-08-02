@@ -1,25 +1,10 @@
 var searchData=
 [
-  ['database_2ec_0',['database.c',['../database_8c.html',1,'']]],
-  ['database_2eh_1',['database.h',['../database_8h.html',1,'']]],
-  ['datetime_2',['DateTime',['../struct_date_time.html',1,'']]],
-  ['db_3',['Db',['../struct_db.html',1,'']]],
-  ['db_5fajouter_5fproduit_4',['db_ajouter_produit',['../database_8h.html#a24f87cdb18f19d2c7ce064f6a56421ba',1,'db_ajouter_produit(sqlite3 *db, const Produit *p):&#160;database.c'],['../database_8c.html#a24f87cdb18f19d2c7ce064f6a56421ba',1,'db_ajouter_produit(sqlite3 *db, const Produit *p):&#160;database.c']]],
-  ['db_5fclose_5',['db_close',['../database_8h.html#ae07af262c608d2e3de291268d923d24a',1,'db_close(sqlite3 *db):&#160;database.c'],['../database_8c.html#ae07af262c608d2e3de291268d923d24a',1,'db_close(sqlite3 *db):&#160;database.c']]],
-  ['db_5finit_6',['db_init',['../database_8h.html#a408750fcc9af8d14bd2bbf287b584b67',1,'db_init(sqlite3 **db, const char *filename):&#160;database.c'],['../database_8c.html#a408750fcc9af8d14bd2bbf287b584b67',1,'db_init(sqlite3 **db, const char *filename):&#160;database.c']]],
-  ['db_5flister_5fproduits_7',['db_lister_produits',['../database_8h.html#a42195505d310a0a6d65a715385f7e546',1,'db_lister_produits(sqlite3 *db):&#160;database.c'],['../database_8c.html#a42195505d310a0a6d65a715385f7e546',1,'db_lister_produits(sqlite3 *db):&#160;database.c']]],
-  ['db_5fmodifier_5fproduit_8',['db_modifier_produit',['../database_8h.html#a432b4c1d45194b5c16adb90c6f9217af',1,'db_modifier_produit(sqlite3 *db, const Produit *p):&#160;database.c'],['../database_8c.html#a432b4c1d45194b5c16adb90c6f9217af',1,'db_modifier_produit(sqlite3 *db, const Produit *p):&#160;database.c']]],
-  ['db_5fproduit_5fexiste_9',['db_produit_existe',['../database_8h.html#a1b127f7a31176dc99d8bc3997a7a0951',1,'db_produit_existe(sqlite3 *db, const char *nom):&#160;database.c'],['../database_8c.html#a1b127f7a31176dc99d8bc3997a7a0951',1,'db_produit_existe(sqlite3 *db, const char *nom):&#160;database.c']]],
-  ['db_5fproduit_5fexiste_5fpar_5fid_10',['db_produit_existe_par_id',['../database_8h.html#adc59c9044805a2f56b1edde9d0c54794',1,'db_produit_existe_par_id(sqlite3 *db, int id):&#160;database.c'],['../database_8c.html#adc59c9044805a2f56b1edde9d0c54794',1,'db_produit_existe_par_id(sqlite3 *db, int id):&#160;database.c']]],
-  ['db_5fsupprimer_5fproduit_11',['db_supprimer_produit',['../database_8h.html#aa82e22b7b47ca0e7dad3a757763259f7',1,'db_supprimer_produit(sqlite3 *db, int id):&#160;database.c'],['../database_8c.html#aa82e22b7b47ca0e7dad3a757763259f7',1,'db_supprimer_produit(sqlite3 *db, int id):&#160;database.c']]],
-  ['dbclientdata_12',['DbClientData',['../struct_db_client_data.html',1,'']]],
-  ['dbfixer_13',['DbFixer',['../struct_db_fixer.html',1,'']]],
-  ['dblquotestr_14',['DblquoteStr',['../struct_dblquote_str.html',1,'']]],
-  ['dbpath_15',['DbPath',['../struct_db_path.html',1,'']]],
-  ['de_20stock_16',['📦 Projet C - Gestion de Stock',['../md__r_e_a_d_m_e.html',1,'']]],
-  ['decimal_17',['Decimal',['../struct_decimal.html',1,'']]],
-  ['des_20binaires_18',['Téléchargement des binaires',['../md__r_e_a_d_m_e.html#autotoc_md13',1,'']]],
-  ['dev_5frefactorsqlite_19',['🔄 Changements récents (Branche &lt;span class=&quot;tt&quot;&gt;dev_RefactorSqlite&lt;/span&gt;)',['../md__r_e_a_d_m_e.html#autotoc_md4',1,'']]],
-  ['distinctctx_20',['DistinctCtx',['../struct_distinct_ctx.html',1,'']]],
-  ['du_20projet_21',['du projet',['../md__r_e_a_d_m_e.html#autotoc_md6',1,'🗂️ Réorganisation du projet'],['../md__r_e_a_d_m_e.html#autotoc_md2',1,'🛠️ Structure du projet']]]
+  ['dépendances_20pour_20les_20tests_0',['📦 Dépendances pour les tests',['../md__r_e_a_d_m_e.html#autotoc_md17',1,'']]],
+  ['de_20stock_1',['📦 Projet C - Gestion de Stock',['../md__r_e_a_d_m_e.html',1,'']]],
+  ['des_20binaires_2',['Téléchargement des binaires',['../md__r_e_a_d_m_e.html#autotoc_md22',1,'']]],
+  ['dev_5frefactorsqlite_3',['🔄 Changements récents (Branche &lt;span class=&quot;tt&quot;&gt;dev_RefactorSqlite&lt;/span&gt;)',['../md__r_e_a_d_m_e.html#autotoc_md9',1,'']]],
+  ['disponibles_4',['🖌️ Thèmes disponibles',['../md__r_e_a_d_m_e.html#autotoc_md4',1,'']]],
+  ['du_20projet_5',['du projet',['../md__r_e_a_d_m_e.html#autotoc_md11',1,'🗂️ Réorganisation du projet'],['../md__r_e_a_d_m_e.html#autotoc_md7',1,'🛠️ Structure du projet']]],
+  ['dynamique_20par_20thème_6',['🎨 Interface Dynamique par Thème',['../md__r_e_a_d_m_e.html#autotoc_md2',1,'']]]
 ];

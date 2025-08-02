@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['gestion_20de_20stock_0',['📦 Projet C - Gestion de Stock',['../md__r_e_a_d_m_e.html',1,'']]]
+  ['fonctionnalités_20améliorées_0',['🧪 Fonctionnalités améliorées',['../md__r_e_a_d_m_e.html#autotoc_md12',1,'']]],
+  ['fonctionnalités_20principales_1',['✨ Fonctionnalités principales',['../md__r_e_a_d_m_e.html#autotoc_md8',1,'']]]
 ];

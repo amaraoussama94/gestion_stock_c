@@ -10,6 +10,9 @@ Ce programme permet à l\textquotesingle{}utilisateur d\textquotesingle{}ajouter
 {\ttfamily \#include "{}produit.\+h"{}}\newline
 {\ttfamily \#include $<$stdlib.\+h$>$}\newline
 {\ttfamily \#include "{}utils.\+h"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include "{}style.\+h"{}}\newline
+{\ttfamily \#include "{}utils\+\_\+input.\+h"{}}\newline
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -19,8 +22,20 @@ void \mbox{\hyperlink{main_8c_a4953d1edcbbfc7e420c423ded1d5621a}{clear\+\_\+scre
 \begin{DoxyCompactList}\small\item\em Clears the terminal screen. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{main_8c_a5ce7464bfaea97ff6484a00d78b150a3}{pause\+\_\+console}} ()
 \begin{DoxyCompactList}\small\item\em Pauses the console and waits for the user to press a key before continuing. \end{DoxyCompactList}\item 
-\Hypertarget{main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4} 
-int {\bfseries main} ()
+\Hypertarget{main_8c_a0ddf1224851353fc92bfbff6f499fa97}\label{main_8c_a0ddf1224851353fc92bfbff6f499fa97} 
+int {\bfseries main} (int argc, char \texorpdfstring{$\ast$}{*}argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{main_8c_ac48b947f2452c581688bdc5a926bced4}\label{main_8c_ac48b947f2452c581688bdc5a926bced4} 
+int {\bfseries is\+\_\+test\+\_\+mode} = 0
+\item 
+\Hypertarget{main_8c_ab006fbd4af3f97e881df6090f76628d6}\label{main_8c_ab006fbd4af3f97e881df6090f76628d6} 
+int {\bfseries is\+\_\+smoke\+\_\+test} = 0
+\item 
+\Hypertarget{main_8c_abe732a0e6e9fd2a6919498dbe5296150}\label{main_8c_abe732a0e6e9fd2a6919498dbe5296150} 
+const char \texorpdfstring{$\ast$}{*} {\bfseries themes} \mbox{[}$\,$\mbox{]} = \{"{}Classic"{}, "{}Blue"{}, "{}Matrix"{}, "{}Alert"{}\}
 \end{DoxyCompactItemize}
 
 

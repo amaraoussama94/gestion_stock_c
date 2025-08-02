@@ -27,28 +27,32 @@ var NAVTREE =
   [ "gestion_de_stock", "index.html", [
     [ "📦 Projet C - Gestion de Stock", "md__r_e_a_d_m_e.html", [
       [ "🎯 Objectifs", "md__r_e_a_d_m_e.html#autotoc_md1", null ],
-      [ "🛠️ Structure du projet", "md__r_e_a_d_m_e.html#autotoc_md2", null ],
-      [ "✨ Fonctionnalités principales", "md__r_e_a_d_m_e.html#autotoc_md3", null ],
-      [ "🔄 Changements récents (Branche <span class=\"tt\">dev_RefactorSqlite</span>)", "md__r_e_a_d_m_e.html#autotoc_md4", [
-        [ "🧠 Architecture &amp; Refactorisation", "md__r_e_a_d_m_e.html#autotoc_md5", null ],
-        [ "🗂️ Réorganisation du projet", "md__r_e_a_d_m_e.html#autotoc_md6", null ],
-        [ "🧪 Fonctionnalités améliorées", "md__r_e_a_d_m_e.html#autotoc_md7", null ]
+      [ "🎨 Interface Dynamique par Thème", "md__r_e_a_d_m_e.html#autotoc_md2", [
+        [ "🧭 Navigation intuitive", "md__r_e_a_d_m_e.html#autotoc_md3", null ],
+        [ "🖌️ Thèmes disponibles", "md__r_e_a_d_m_e.html#autotoc_md4", null ],
+        [ "🔁 Réinitialisation automatique", "md__r_e_a_d_m_e.html#autotoc_md5", null ]
       ] ],
-      [ "🚀 Compilation", "md__r_e_a_d_m_e.html#autotoc_md8", [
-        [ "Pré-requis", "md__r_e_a_d_m_e.html#autotoc_md9", null ],
-        [ "Instructions", "md__r_e_a_d_m_e.html#autotoc_md10", null ]
+      [ "🛠️ Structure du projet", "md__r_e_a_d_m_e.html#autotoc_md7", null ],
+      [ "✨ Fonctionnalités principales", "md__r_e_a_d_m_e.html#autotoc_md8", null ],
+      [ "🔄 Changements récents (Branche <span class=\"tt\">dev_RefactorSqlite</span>)", "md__r_e_a_d_m_e.html#autotoc_md9", [
+        [ "🧠 Architecture &amp; Refactorisation", "md__r_e_a_d_m_e.html#autotoc_md10", null ],
+        [ "🗂️ Réorganisation du projet", "md__r_e_a_d_m_e.html#autotoc_md11", null ],
+        [ "🧪 Fonctionnalités améliorées", "md__r_e_a_d_m_e.html#autotoc_md12", null ]
       ] ],
-      [ "🔧 Auto Build Process", "md__r_e_a_d_m_e.html#autotoc_md11", null ],
-      [ "⚙️ Intégration Continue", "md__r_e_a_d_m_e.html#autotoc_md12", null ],
-      [ "Téléchargement des binaires", "md__r_e_a_d_m_e.html#autotoc_md13", null ]
-    ] ],
-    [ "Classes", "annotated.html", [
-      [ "Class List", "annotated.html", "annotated_dup" ],
-      [ "Class Index", "classes.html", null ],
-      [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Variables", "functions_vars.html", null ]
-      ] ]
+      [ "🚀 Compilation", "md__r_e_a_d_m_e.html#autotoc_md13", [
+        [ "Pré-requis", "md__r_e_a_d_m_e.html#autotoc_md14", null ],
+        [ "Instructions", "md__r_e_a_d_m_e.html#autotoc_md15", null ]
+      ] ],
+      [ "🧪 Tests &amp; Couverture", "md__r_e_a_d_m_e.html#autotoc_md16", [
+        [ "📦 Dépendances pour les tests", "md__r_e_a_d_m_e.html#autotoc_md17", [
+          [ "Sous Linux", "md__r_e_a_d_m_e.html#autotoc_md18", null ],
+          [ "Sous Windows (via MSYS2 ou MinGW) :", "md__r_e_a_d_m_e.html#autotoc_md19", null ]
+        ] ]
+      ] ],
+      [ "🔧 Auto Build Process", "md__r_e_a_d_m_e.html#autotoc_md20", null ],
+      [ "⚙️ Intégration Continue", "md__r_e_a_d_m_e.html#autotoc_md21", null ],
+      [ "Téléchargement des binaires", "md__r_e_a_d_m_e.html#autotoc_md22", null ],
+      [ "🗞️ Weekly Summary", "md__r_e_a_d_m_e.html#autotoc_md23", null ]
     ] ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
@@ -62,8 +66,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"annotated.html",
-"struct_vtab_ctx.html"
+"files.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
