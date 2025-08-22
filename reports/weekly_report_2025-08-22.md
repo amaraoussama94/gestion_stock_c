@@ -1,4 +1,4 @@
-#  Weekly Report - 2025-07-25
+#  Weekly Report - 2025-08-22
 
 ## Test Results
 make[1]: Entering directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
@@ -9,6 +9,28 @@ Exécution des tests unitaires...
 make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 make[1]: Entering directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 cc -Wall -Wextra -g -IInc -MMD -o build/test_integration test/test_integration.c sqlite-lib/sqlite3.c Src/database.c Src/produit.c Src/style.c Src/utils.c Src/utils_input.c
+Src/utils.c: In function ‘get_db_path’:
+Src/utils.c:53:11: warning: unused variable ‘exe_dir’ [-Wunused-variable]
+   53 |     char* exe_dir = dirname(exe_path);
+      |           ^~~~~~~
+Src/utils.c:56:51: warning: ‘snprintf’ output may be truncated before the last format character [-Wformat-truncation=]
+   56 |     snprintf(full_path, sizeof(full_path), "%s%s%s", exe_path,
+      |                                                   ^
+Src/utils.c:56:5: note: ‘snprintf’ output 2 or more bytes (assuming 513) into a destination of size 512
+   56 |     snprintf(full_path, sizeof(full_path), "%s%s%s", exe_path,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   57 | #ifdef _WIN32
+      | ~~~~~~~~~~~~~
+   58 |         "\\",
+      |         ~~~~~
+   59 | #else
+      | ~~~~~
+   60 |         "/",
+      |         ~~~~
+   61 | #endif
+      | ~~~~~~
+   62 |         db_name);
+      |         ~~~~~~~~
 Src/utils_input.c: In function ‘get_arrow_selection’:
 Src/utils_input.c:38:13: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
    38 |             system("clear");
@@ -21,39 +43,39 @@ make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 ##  Valgrind
 make[1]: Entering directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 valgrind --leak-check=full --error-exitcode=1 ./build/test_database
-==3247== Memcheck, a memory error detector
-==3247== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==3247== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
-==3247== Command: ./build/test_database
-==3247== 
+==3279== Memcheck, a memory error detector
+==3279== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==3279== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==3279== Command: ./build/test_database
+==3279== 
  Tous les tests ont réussi.
-==3247== 
-==3247== HEAP SUMMARY:
-==3247==     in use at exit: 0 bytes in 0 blocks
-==3247==   total heap usage: 228 allocs, 228 frees, 121,824 bytes allocated
-==3247== 
-==3247== All heap blocks were freed -- no leaks are possible
-==3247== 
-==3247== For lists of detected and suppressed errors, rerun with: -s
-==3247== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3279== 
+==3279== HEAP SUMMARY:
+==3279==     in use at exit: 0 bytes in 0 blocks
+==3279==   total heap usage: 228 allocs, 228 frees, 121,824 bytes allocated
+==3279== 
+==3279== All heap blocks were freed -- no leaks are possible
+==3279== 
+==3279== For lists of detected and suppressed errors, rerun with: -s
+==3279== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 make[1]: Entering directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 valgrind --leak-check=full --error-exitcode=1 ./build/test_integration
-==3251== Memcheck, a memory error detector
-==3251== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==3251== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
-==3251== Command: ./build/test_integration
-==3251== 
+==3283== Memcheck, a memory error detector
+==3283== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==3283== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==3283== Command: ./build/test_integration
+==3283== 
 Test d'intégration réussi.
-==3251== 
-==3251== HEAP SUMMARY:
-==3251==     in use at exit: 0 bytes in 0 blocks
-==3251==   total heap usage: 228 allocs, 228 frees, 121,824 bytes allocated
-==3251== 
-==3251== All heap blocks were freed -- no leaks are possible
-==3251== 
-==3251== For lists of detected and suppressed errors, rerun with: -s
-==3251== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3283== 
+==3283== HEAP SUMMARY:
+==3283==     in use at exit: 0 bytes in 0 blocks
+==3283==   total heap usage: 228 allocs, 228 frees, 121,824 bytes allocated
+==3283== 
+==3283== All heap blocks were freed -- no leaks are possible
+==3283== 
+==3283== For lists of detected and suppressed errors, rerun with: -s
+==3283== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 
 ##  Code Coverage
@@ -74,7 +96,7 @@ make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 ##  Static Analysis (cppcheck)
 # 🐞 Weekly Bug Report
 
-📅 _Last updated: 2025-07-25_
+📅 _Last updated: 2025-08-22_
 
 ## 📊 Summary
 
@@ -82,9 +104,9 @@ make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 |------|-------|
 | Error | 28 |
 | Warning | 68 |
-| Style | 1654 |
+| Style | 1656 |
 | Portability | 3 |
-| Information | 172 |
+| Information | 176 |
 
 ## Informations
 
@@ -99,12 +121,16 @@ make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 - `Src/style.c:10`: Include file: "style.h" not found. (Include file: "style.h" not found.)
 - `Src/style.c:11`: Include file: <stdio.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <stdio.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
 - `Src/style.c:13`: Include file: <windows.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <windows.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
-- `Src/utils.c:9`: Include file: <stdio.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <stdio.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
-- `Src/utils.c:10`: Include file: <string.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <string.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
-- `Src/utils.c:11`: Include file: <ctype.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <ctype.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
-- `Src/utils.c:12`: Include file: <stdlib.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <stdlib.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
-- `Src/utils.c:13`: Include file: "utils.h" not found. (Include file: "utils.h" not found.)
-- `Src/utils.c:14`: Include file: <errno.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <errno.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
+- `Src/utils.c:10`: Include file: <stdio.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <stdio.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
+- `Src/utils.c:11`: Include file: <string.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <string.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
+- `Src/utils.c:12`: Include file: <ctype.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <ctype.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
+- `Src/utils.c:13`: Include file: <stdlib.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <stdlib.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
+- `Src/utils.c:14`: Include file: "utils.h" not found. (Include file: "utils.h" not found.)
+- `Src/utils.c:15`: Include file: <errno.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <errno.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
+- `Src/utils.c:20`: Include file: <unistd.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <unistd.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
+- `Src/utils.c:21`: Include file: <libgen.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <libgen.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
+- `Src/utils.c:22`: Include file: <limits.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <limits.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
+- `Src/utils.c:18`: Include file: <windows.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <windows.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
 - `Src/utils_input.c:10`: Include file: <stdio.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <stdio.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
 - `Src/utils_input.c:15`: Include file: <termios.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <termios.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
 - `Src/utils_input.c:16`: Include file: <unistd.h> not found. Please note: Cppcheck does not need standard library headers to get proper results. (Include file: <unistd.h> not found. Please note: Cppcheck does not need standard library headers to get proper results.)
@@ -263,8 +289,10 @@ make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 
 ## Styles
 
-- `Src/utils.c:53`: The scope of the variable 'val' can be reduced. (The scope of the variable 'val' can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for 'i' can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it's safe to move 'int i = 0;' here\012        for (int n = 0; n < 10; ++n) {\012            // it is possible but not safe to move 'int i = 0;' here\012            do_something(&i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level.)
-- `Src/utils.c:93`: The scope of the variable 'val' can be reduced. (The scope of the variable 'val' can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for 'i' can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it's safe to move 'int i = 0;' here\012        for (int n = 0; n < 10; ++n) {\012            // it is possible but not safe to move 'int i = 0;' here\012            do_something(&i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level.)
+- `Src/utils.c:105`: The scope of the variable 'val' can be reduced. (The scope of the variable 'val' can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for 'i' can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it's safe to move 'int i = 0;' here\012        for (int n = 0; n < 10; ++n) {\012            // it is possible but not safe to move 'int i = 0;' here\012            do_something(&i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level.)
+- `Src/utils.c:145`: The scope of the variable 'val' can be reduced. (The scope of the variable 'val' can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for 'i' can be reduced:\012void f(int x)\012{\012    int i = 0;\012    if (x) {\012        // it's safe to move 'int i = 0;' here\012        for (int n = 0; n < 10; ++n) {\012            // it is possible but not safe to move 'int i = 0;' here\012            do_something(&i);\012        }\012    }\012}\012When you see this message it is always safe to reduce the variable scope 1 level.)
+- `Src/utils.c:53`: Variable 'exe_dir' can be declared as pointer to const (Variable 'exe_dir' can be declared as pointer to const)
+- `Src/utils.c:53`: Variable 'exe_dir' is assigned a value that is never used. (Variable 'exe_dir' is assigned a value that is never used.)
 - `main.c:82`: Parameter 'argv' can be declared as const array (Parameter 'argv' can be declared as const array)
 - `sqlite-lib/shell.c:8315`: Array index 'i' is used before limits check. (Defensive programming: The variable 'i' is used as an array index before it is checked that is within limits. This can mean that the array might be accessed out of bounds. Reorder conditions such as '(a[i] && i < 10)' to '(i < 10 && a[i])'. That way the array will not be accessed if the index is out of limits.)
 - `sqlite-lib/shell.c:26288`: Assignment 'c='"'' is redundant with condition 'c=='"''. (Assignment 'c='"'' is redundant with condition 'c=='"''.)
