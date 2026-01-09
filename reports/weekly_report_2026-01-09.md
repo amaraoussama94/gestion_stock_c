@@ -1,4 +1,4 @@
-#  Weekly Report - 2026-01-02
+#  Weekly Report - 2026-01-09
 
 ## Test Results
 make[1]: Entering directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
@@ -43,39 +43,39 @@ make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 ##  Valgrind
 make[1]: Entering directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 valgrind --leak-check=full --error-exitcode=1 ./build/test_database
-==2766== Memcheck, a memory error detector
-==2766== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==2766== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
-==2766== Command: ./build/test_database
-==2766== 
+==2757== Memcheck, a memory error detector
+==2757== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==2757== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==2757== Command: ./build/test_database
+==2757== 
  Tous les tests ont réussi.
-==2766== 
-==2766== HEAP SUMMARY:
-==2766==     in use at exit: 0 bytes in 0 blocks
-==2766==   total heap usage: 228 allocs, 228 frees, 121,824 bytes allocated
-==2766== 
-==2766== All heap blocks were freed -- no leaks are possible
-==2766== 
-==2766== For lists of detected and suppressed errors, rerun with: -s
-==2766== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==2757== 
+==2757== HEAP SUMMARY:
+==2757==     in use at exit: 0 bytes in 0 blocks
+==2757==   total heap usage: 228 allocs, 228 frees, 121,824 bytes allocated
+==2757== 
+==2757== All heap blocks were freed -- no leaks are possible
+==2757== 
+==2757== For lists of detected and suppressed errors, rerun with: -s
+==2757== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 make[1]: Entering directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 valgrind --leak-check=full --error-exitcode=1 ./build/test_integration
-==2770== Memcheck, a memory error detector
-==2770== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==2770== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
-==2770== Command: ./build/test_integration
-==2770== 
+==2761== Memcheck, a memory error detector
+==2761== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==2761== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==2761== Command: ./build/test_integration
+==2761== 
 Test d'intégration réussi.
-==2770== 
-==2770== HEAP SUMMARY:
-==2770==     in use at exit: 0 bytes in 0 blocks
-==2770==   total heap usage: 228 allocs, 228 frees, 121,824 bytes allocated
-==2770== 
-==2770== All heap blocks were freed -- no leaks are possible
-==2770== 
-==2770== For lists of detected and suppressed errors, rerun with: -s
-==2770== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==2761== 
+==2761== HEAP SUMMARY:
+==2761==     in use at exit: 0 bytes in 0 blocks
+==2761==   total heap usage: 228 allocs, 228 frees, 121,824 bytes allocated
+==2761== 
+==2761== All heap blocks were freed -- no leaks are possible
+==2761== 
+==2761== For lists of detected and suppressed errors, rerun with: -s
+==2761== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 
 ##  Code Coverage
@@ -96,7 +96,7 @@ make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 ##  Static Analysis (cppcheck)
 # 🐞 Weekly Bug Report
 
-📅 _Last updated: 2026-01-02_
+📅 _Last updated: 2026-01-09_
 
 ## 📊 Summary
 
