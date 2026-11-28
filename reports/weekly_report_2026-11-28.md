@@ -1,4 +1,4 @@
-#  Weekly Report - 2026-10-30
+#  Weekly Report - 2026-11-28
 
 ## Test Results
 make[1]: Entering directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
@@ -58,21 +58,21 @@ make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 ##  Valgrind
 make[1]: Entering directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 valgrind --leak-check=full --error-exitcode=1 ./build/test_database
-==2711== Memcheck, a memory error detector
-==2711== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
-==2711== Using Valgrind-3.26.0 and LibVEX; rerun with -h for copyright info
-==2711== Command: ./build/test_database
-==2711== 
+==2754== Memcheck, a memory error detector
+==2754== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==2754== Using Valgrind-3.26.0 and LibVEX; rerun with -h for copyright info
+==2754== Command: ./build/test_database
+==2754== 
  Tous les tests ont réussi.
-==2711== 
-==2711== HEAP SUMMARY:
-==2711==     in use at exit: 0 bytes in 0 blocks
-==2711==   total heap usage: 228 allocs, 228 frees, 121,824 bytes allocated
-==2711== 
-==2711== All heap blocks were freed -- no leaks are possible
-==2711== 
-==2711== For lists of detected and suppressed errors, rerun with: -s
-==2711== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==2754== 
+==2754== HEAP SUMMARY:
+==2754==     in use at exit: 0 bytes in 0 blocks
+==2754==   total heap usage: 228 allocs, 228 frees, 121,824 bytes allocated
+==2754== 
+==2754== All heap blocks were freed -- no leaks are possible
+==2754== 
+==2754== For lists of detected and suppressed errors, rerun with: -s
+==2754== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 make[1]: Entering directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 cc -Wall -Wextra -g -IInc -MMD -o build/test_integration test/test_integration.c sqlite-lib/sqlite3.c Src/database.c Src/produit.c Src/style.c Src/utils.c Src/utils_input.c
@@ -136,7 +136,7 @@ make[1]: Leaving directory '/home/runner/work/gestion_stock_c/gestion_stock_c'
 ##  Static Analysis (cppcheck)
 # 🐞 Weekly Bug Report
 
-📅 _Last updated: 2026-10-30_
+📅 _Last updated: 2026-11-28_
 
 ## 📊 Summary
 
